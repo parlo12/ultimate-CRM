@@ -221,15 +221,62 @@
 
         function refreshChatList() {
             $.ajax({
-                url: '{{ url('/chat-box/refresh-chat-box') }}', // Call the new route
+                url: '{{ url('/chat-box/refresh-chat-box') }}',
                 method: 'GET',
                 success: function(response) {
-                    console.log(response)
-                    $('#unread_count').html(response.unread_count ? response.unread_count : '');
+                    console.log(response);
 
+                    // Update unread count badge
+                    $('#unread_count').html(response.unread_chats ? response.unread_chats : '');
+
+                    // Clear existing chat lists
+                    $('#read-users-list .chat-users-list').empty();
+                    $('#unread-users-list .chat-users-list').empty();
+                    $('#starred-users-list .chat-users-list').empty();
+
+                    // Loop through chat_box data and populate lists
+                    response.chat_box.forEach(function(chat) {
+                        var last_message = {!! json_encode(\Illuminate\Support\Str::limit(\App\Helpers\Helper::last_message($chat->id), 15)) !!};
+                        var name = {!! json_encode(\App\Helpers\Helper::contact_name1($chat->to)) !!};
+                        var updated_at = {!! json_encode(Tool::customerDateTime($chat->updated_at)) !!};
+                        const chatItem = `
+                    <li data-id="${chat.uid}" data-box-id="${chat.id}">
+                        <span class="avatar">
+                            <img src="{{ asset('images/profile/profile.jpg') }}" height="36" width="54" alt="Avatar" />
+                        </span>
+                        <div class="chat-info flex-grow-1">
+                            <h5 class="mb-0">${name}</h5>
+                            <p class="card-text text-truncate">${last_message}</p>
+                        </div>
+                        <div class="chat-meta text-nowrap">
+                            <small class="float-end mb-25 chat-time">${updated_at}</small>
+                            ${chat.notification > 0 ? `<span class="badge bg-primary rounded-pill float-end notification_count">${chat.notification}</span>` : ''}
+                            <button type="button" class="btn ${chat.is_starred ? 'bg-warning' : ''} p-0 star-btn float-end" onclick="toggleStar('${chat.uid}', this)" title="${chat.is_starred ? 'Unmark as Starred' : 'Mark as Starred'}">
+                                <i data-feather="star" class="cursor-pointer font-medium-2 ${chat.is_starred ? 'text-white' : 'text-secondary'}"></i>
+                            </button>
+                        </div>
+                    </li>
+                `;
+
+                        // Append to respective list based on chat properties
+                        if (chat.notification > 0) {
+                            $('#unread-users-list .chat-users-list').append(chatItem);
+                        } else if (chat.is_starred) {
+                            $('#starred-users-list .chat-users-list').append(chatItem);
+                        } else {
+                            $('#read-users-list .chat-users-list').append(chatItem);
+                        }
+                    });
+
+                    // Reinitialize icons (if using Feather icons, for example)
+                    feather.replace();
+                },
+                error: function(error) {
+                    console.error('Error refreshing chat list:', error);
                 }
             });
         }
+
 
         // Refresh the chat list every 3 seconds
         setInterval(refreshChatList, 3000);

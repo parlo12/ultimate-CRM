@@ -70,6 +70,7 @@ class ChatBoxController extends Controller
             ->select('uid', 'id', 'to', 'from', 'updated_at', 'notification', 'is_starred')
             ->where('reply_by_customer', true)
             ->orderBy('updated_at', 'desc')
+            ->limit(10)
             ->get();
             $read_box = ChatBox::where('user_id', Auth::user()->id)
             ->select('uid', 'id', 'to', 'from', 'updated_at', 'notification', 'is_starred')
