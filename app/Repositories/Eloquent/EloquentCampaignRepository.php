@@ -234,8 +234,8 @@
                 'cost'           => $price,
                 'sending_server' => $sending_server,
                 'sms_type'       => $sms_type,
-                'userId'         => $input['userId'], // external userId
-                'external_uuid'  => $input['external_uuid'], // external uuid
+                'userId'         => $input['userId'] ?? null, // external userId
+                'external_uuid'  => $input['external_uuid'] ?? null , // external uuid
             ];
 
             if (isset($input['api_key'])) {
