@@ -17,7 +17,8 @@ class ChatBoxMessage extends Model
         'sms_type',
         'send_by',
         'sending_server_id',
-        'recovered'
+        'recovered',
+        'external_uuid'
 
     ];
 

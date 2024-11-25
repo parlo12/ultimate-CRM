@@ -234,6 +234,8 @@
                 'cost'           => $price,
                 'sending_server' => $sending_server,
                 'sms_type'       => $sms_type,
+                'userId'         => $input['userId'], // external userId
+                'external_uuid'  => $input['external_uuid'], // external uuid
             ];
 
             if (isset($input['api_key'])) {
@@ -314,19 +316,28 @@
 
                             $chatbox->save();
                         }
-                        // if (isset($input['media_url'])) {
-                            $mediaUrl=$input['media_url'];
-                        Log::info("Media URL $mediaUrl");
-                        //}
-                        
-                        ChatBoxMessage::create([
+                        $messageData  = [
                             'box_id'            => $chatbox->id,
                             'message'           => $message,
                             'send_by'           => 'from',
                             'sms_type'          => 'plain',
                             'sending_server_id' => $sending_server->id,
-                            'media_url'=>$mediaUrl
-                        ]);
+                            
+                            
+                        ];
+                         if (isset($input['media_url'])) {
+                            $mediaUrl = $input['media_url'];
+                            $messageData = \array_merge($messageData,['media_url' => $mediaUrl]);
+                            Log::info("Media URL $mediaUrl");
+                        }
+
+                        if($data?->status)
+                        {
+                            [$status , $messageId] = explode("|" , $data->status);
+                            $messageData = array_merge($messageData,['external_uuid'  => $messageId]);
+                        }
+                        
+                        ChatBoxMessage::create($messageData);
                     }
 
                     $data = $data->select('uid', 'to', 'from', 'message', 'customer_status', 'cost', 'sms_count')->find($data->id);

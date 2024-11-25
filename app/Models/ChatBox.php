@@ -35,6 +35,11 @@
             return $this->hasMany(ChatBoxMessage::class, 'box_id', 'id');
         }
 
+        public function lastChatBoxMessage()
+        {
+            return $this->hasOne(ChatBoxMessage::class, 'box_id', 'id')->latestOfMany();
+        }
+
         public function boxMessages()
         {
             $this->belongsTo(ChatBoxMessage::class, 'box_id', 'id');
