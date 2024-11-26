@@ -575,7 +575,9 @@ class ChatBoxController extends Controller
             'message'        => $request->message,
             'exist_c_code'   => 'yes',
             'user'           => $user,
-            'media_url'      =>$media_url,
+            'media_url'      => $media_url,
+            'userId'         => $request->userId,
+            'external_uuid'  => $box->lastChatBoxMessage
         ];
 
         if ($user->customer->getOption('sender_id_verification') == 'yes') {

@@ -35,7 +35,7 @@
                     <div class="card-content">
                         <div class="card-body">
 
-                            <form class="form form-vertical" action="{{ route('customer.chatbox.sent') }}" method="post">
+                            <form id="chatbox_send" class="form form-vertical" action="{{ route('customer.chatbox.sent') }}" method="post">
                                 @csrf
                                 <div class="row">
 
@@ -248,5 +248,33 @@
                 }
             });
         });
+
+        function getUserId()
+        {
+            $.ajax({
+                    url: `http://localhost:4000/users/login`,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify({
+                        email: "{{ auth()->user()?->email }}"
+                    }),
+                    success: function(response) {
+  
+                        $("<input>").attr({ 
+                            name: "userId", 
+                            id: "userId", 
+                            type: "hidden", 
+                            value: response.data._id 
+                        }).appendTo("form"); 
+                    }
+                       
+                });
+           
+        }
+
+        getUserId();
+
+        
     </script>
 @endsection

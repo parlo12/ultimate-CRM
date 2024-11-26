@@ -218,6 +218,7 @@
         const TYPE_LABSMOBILE         = 'LabsMobile';
         const TYPE_WHGATE             = 'WHGate';
         const TYPE_WAWHGATE           = 'WaWHGate';
+        const TYPE_WEBSOCKETAPI       = 'WebsocketAPI';
 
         /**
          * The attributes that are mass assignable.

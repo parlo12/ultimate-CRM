@@ -4859,6 +4859,25 @@
                     'quota_base'      => 1,
                     'quota_unit'      => 'minute',
                 ],
+                SendingServer::TYPE_WEBSOCKETAPI => [
+                    'name'            => SendingServer::TYPE_WEBSOCKETAPI,
+                    'settings'        => SendingServer::TYPE_WEBSOCKETAPI,
+                    'api_link'        => 'http://localhost:4000/',
+                    'auth_token'      => 'auth_token',
+                    'schedule'        => true,
+                    'type'            => 'http',
+                    'two_way'         => true,
+                    'plain'           => true,
+                    'mms'             => true,
+                    'voice'           => true,
+                    'whatsapp'        => true,
+                    'viber'           => false,
+                    'otp'             => false,
+                    'sms_per_request' => 1,
+                    'quota_value'     => 500,
+                    'quota_base'      => 1,
+                    'quota_unit'      => 'minute',
+                ]
 
             ];
         }

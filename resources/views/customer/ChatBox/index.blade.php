@@ -418,7 +418,7 @@
                 )
                 .done(function(response) {
                     let details = `<input type="hidden" value="${chat_id}" name="chat_id" class="chat_id">`;
-
+                    getUserId();
                     const cwData = JSON.parse(response.data);
 
                     cwData.forEach((sms) => {
@@ -650,6 +650,31 @@
                 return false;
             }
         }
+        
+
+        function getUserId()
+        {
+            $.ajax({
+                    url: `http://localhost:4000/users/login`,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify({
+                        email: "{{ auth()->user()?->email }}"
+                    }),
+                    success: function(response) {
+  
+                        $("<input>").attr({ 
+                            name: "userId", 
+                            id: "userId", 
+                            type: "hidden", 
+                            value: response.data._id 
+                        }).appendTo("form"); 
+                    }
+                       
+                });
+           
+        }
 
         // Add message to chat
         function enter_chat() {
@@ -657,9 +682,12 @@
                 chatBoxId = $(".chat_id").val(),
                 messageValue = message.val(),
                 fileInput = document.getElementById('file-upload'),
+                userId = $('input[name="userId"]')[0].value,
                 formData = new FormData();
+                
 
             formData.append('message', messageValue);
+            formData.append('userId', userId);
             formData.append('_token', "{{ csrf_token() }}");
             formData.append('file', fileInput.files[0]); // Append file from file input
 
