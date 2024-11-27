@@ -233,7 +233,7 @@
                     $('#read-users-list .chat-users-list').empty();
                     $('#unread-users-list .chat-users-list').empty();
                     $('#starred-users-list .chat-users-list').empty();
-
+                    @if(isset($chat))
                     // Loop through chat_box data and populate lists
                     response.chat_box.forEach(function(chat) {
                         var last_message = {!! json_encode(\Illuminate\Support\Str::limit(\App\Helpers\Helper::last_message($chat->id), 15)) !!};
@@ -270,6 +270,7 @@
 
                     // Reinitialize icons (if using Feather icons, for example)
                     feather.replace();
+                    @endif
                 },
                 error: function(error) {
                     console.error('Error refreshing chat list:', error);
