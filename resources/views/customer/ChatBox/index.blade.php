@@ -652,29 +652,51 @@
         }
         
 
-        function getUserId()
-        {
-            $.ajax({
-                    url: `http://localhost:4000/users/login`,
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
+        function getUserId() {
+            const email = "{{ auth()->user()?->email }}";
 
-                    data: JSON.stringify({
-                        email: "{{ auth()->user()?->email }}"
-                    }),
-                    success: function(response) {
-  
-                        $("<input>").attr({ 
-                            name: "userId", 
-                            id: "userId", 
-                            type: "hidden", 
-                            value: response.data._id 
-                        }).appendTo("form"); 
+            $.ajax({
+                url: `http://localhost:4000/users/register`,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ email: email }),
+                success: function(response) {
+                    if (response.status === "success") {
+                        toastr['success']("User registered successfully.", "{{ __('locale.labels.success') }}");
+                        loginUser(email);
                     }
-                       
-                });
-           
+                },
+                error: function(reject) {
+                    if (reject.status === 500) {
+                        loginUser(email);
+                    } else {
+                        console.log("An error occurred during registration.", "{{ __('locale.labels.attention') }}");
+                    }
+                }
+            });
         }
+
+        function loginUser(email) {
+            $.ajax({
+                url: `http://localhost:4000/users/login`,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ email: email }),
+                success: function(response) {
+                    $("<input>").attr({
+                        name: "userId",
+                        id: "userId",
+                        type: "hidden",
+                        value: response.data._id
+                    }).appendTo("form");
+                },
+                error: function() {
+                    console.log("Login failed. Please try again.", "{{ __('locale.labels.attention') }}");
+                }
+            });
+        }
+
+        getUserId();
 
         // Add message to chat
         function enter_chat() {
