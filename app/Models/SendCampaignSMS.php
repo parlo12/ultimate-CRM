@@ -285,8 +285,8 @@ class SendCampaignSMS extends Model
                         'userId' => $data['userId'],
                         'origin' => 'CRM' 
                      ]:[
-                        "sender" => $phone,
-                        "receiver"=> $sender_id,
+                        "sender" => $sender_id,
+                        "receiver"=> $phone,
                         "content"=> $message,
                         "userId"=> $data['userId'],
                         "origin" => 'CRM' 
