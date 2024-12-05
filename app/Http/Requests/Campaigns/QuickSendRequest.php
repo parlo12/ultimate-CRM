@@ -27,6 +27,7 @@ class QuickSendRequest extends FormRequest
                 'recipients'     => 'required',
                 'message'        => 'required',
                 'delimiter'      => 'required',
+                'userId'         => 'nullable',   
         ];
     }
 }
