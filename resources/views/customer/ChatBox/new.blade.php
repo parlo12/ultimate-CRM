@@ -258,28 +258,6 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({ email: email }),
                 success: function(response) {
-                    if (response.status === "success") {
-                        toastr['success']("User registered successfully.", "{{ __('locale.labels.success') }}");
-                        loginUser(email);
-                    }
-                },
-                error: function(reject) {
-                    if (reject.status === 500) {
-                        loginUser(email);
-                    } else {
-                        console.log("An error occurred during registration.", "{{ __('locale.labels.attention') }}");
-                    }
-                }
-            });
-        }
-
-        function loginUser(email) {
-            $.ajax({
-                url: `http://localhost:4000/users/login`,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ email: email }),
-                success: function(response) {
                     $("<input>").attr({
                         name: "userId",
                         id: "userId",
@@ -287,11 +265,13 @@
                         value: response.data._id
                     }).appendTo("form");
                 },
-                error: function() {
-                    console.log("Login failed. Please try again.", "{{ __('locale.labels.attention') }}");
+                error: function(reject) {
+                    console.log("An error occurred during registration.", "{{ __('locale.labels.attention') }}");
+                    
                 }
             });
         }
+
 
         getUserId();
 
