@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Customer\DLRController;
+use App\Models\SendingServer;
 use ElephantIO\Client;
 use Illuminate\Console\Command;
 
@@ -27,17 +28,19 @@ class WebsocketAPIDLR extends Command
      */
     public function handle()
     {
-        $url = "ws://localhost:4000";
-        $client = Client::create($url);
-        $client->connect();
-        while (true) {
-            if ($packet = $client->wait('messageStatusUpdate', 1)) {
-                $data = $packet->data;
-                if($data['status'] == strtolower("Delivered"))
-                    DLRController::updateDLR($data['messageId'], 'Delivered');
+        $sendingServer = SendingServer::where('settings', SendingServer::TYPE_WEBSOCKETAPI)->first();
+        if ($sendingServer) {
+            $client = Client::create($sendingServer->api_link);
+            $client->connect();
+            while (true) {
+                if ($packet = $client->wait('messageStatusUpdate', 1)) {
+                    $data = $packet->data;
+                    if ($data['status'] == strtolower("Delivered"))
+                        DLRController::updateDLR($data['messageId'], 'Delivered');
+                }
             }
-        }
 
-        return Command::SUCCESS;
+            return Command::SUCCESS;
+        }
     }
 }

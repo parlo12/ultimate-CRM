@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Controllers\Customer\DLRController;
 use ElephantIO\Client;
 use Illuminate\Console\Command;
+use App\Models\SendingServer;
 
 class WebsocketReplyRegister extends Command
 {
@@ -27,17 +28,18 @@ class WebsocketReplyRegister extends Command
      */
     public function handle()
     {
-        $url = "ws://localhost:4000";
-        $client = Client::create($url);
-        $client->connect();
-        while (true) {
-            if ($packet = $client->wait(null, 1)) {
-                $data = $packet->data;
-                print_r($data);
-                
+        $sendingServer = SendingServer::where('settings', SendingServer::TYPE_WEBSOCKETAPI)->first();
+        if ($sendingServer) {
+            $client = Client::create($sendingServer->api_link);
+            $client->connect();
+            while (true) {
+                if ($packet = $client->wait(null, 1)) {
+                    $data = $packet->data;
+                    print_r($data);
+                }
             }
-        }
 
-        return Command::SUCCESS;
+            return Command::SUCCESS;
+        }
     }
 }
