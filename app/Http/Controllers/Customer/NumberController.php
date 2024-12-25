@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Requests\SenderID\PayPaymentRequest;
 use App\Library\Tool;
+use App\Models\Currency;
 use App\Models\Invoices;
 use App\Models\PaymentMethods;
 use App\Models\PhoneNumbers;
+use App\Models\SendingServer;
+use App\Models\User;
 use App\Repositories\Contracts\PhoneNumberRepository;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -16,8 +19,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
 use JetBrains\PhpStorm\NoReturn;
+
 class NumberController extends CustomerBaseController
 {
 
@@ -45,9 +50,9 @@ class NumberController extends CustomerBaseController
         $this->authorize('view_numbers');
 
         $breadcrumbs = [
-                ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
-                ['link' => url('dashboard'), 'name' => __('locale.menu.Sending')],
-                ['name' => __('locale.menu.Numbers')],
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Sending')],
+            ['name' => __('locale.menu.Numbers')],
         ];
 
         return view('customer.Numbers.index', compact('breadcrumbs'));
@@ -66,14 +71,14 @@ class NumberController extends CustomerBaseController
         $this->authorize('view_numbers');
 
         $columns = [
-                0 => 'responsive_id',
-                1 => 'uid',
-                2 => 'uid',
-                3 => 'number',
-                4 => 'price',
-                5 => 'status',
-                6 => 'capabilities',
-                7 => 'actions',
+            0 => 'responsive_id',
+            1 => 'uid',
+            2 => 'uid',
+            3 => 'number',
+            4 => 'price',
+            5 => 'status',
+            6 => 'capabilities',
+            7 => 'actions',
         ];
 
         $totalData = PhoneNumbers::where('user_id', Auth::user()->id)->count();
@@ -87,35 +92,34 @@ class NumberController extends CustomerBaseController
 
         if (empty($request->input('search.value'))) {
             $numbers = PhoneNumbers::where('user_id', Auth::user()->id)->offset($start)
-                                   ->limit($limit)
-                                   ->orderBy($order, $dir)
-                                   ->get();
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
         } else {
             $search = $request->input('search.value');
 
             $numbers = PhoneNumbers::where('user_id', Auth::user()->id)->whereLike(['uid', 'number', 'price', 'status'], $search)
-                                   ->offset($start)
-                                   ->limit($limit)
-                                   ->orderBy($order, $dir)
-                                   ->get();
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
 
             $totalFiltered = PhoneNumbers::where('user_id', Auth::user()->id)->whereLike(['uid', 'number', 'price', 'status'], $search)->count();
-
         }
 
         $data = [];
-        if ( ! empty($numbers)) {
+        if (! empty($numbers)) {
             foreach ($numbers as $number) {
 
                 $is_assigned = false;
                 if ($number->status == 'assigned') {
                     $is_assigned = true;
-                    $status      = '<span class="badge bg-success text-uppercase">'.__('locale.labels.assigned').'</span>';
+                    $status      = '<span class="badge bg-success text-uppercase">' . __('locale.labels.assigned') . '</span>';
                 } elseif ($number->status == 'available') {
                     $is_assigned = true;
-                    $status      = '<span class="badge bg-warning text-uppercase">'.__('locale.labels.pending').'</span>';
+                    $status      = '<span class="badge bg-warning text-uppercase">' . __('locale.labels.pending') . '</span>';
                 } else {
-                    $status = '<span class="badge bg-danger text-uppercase">'.__('locale.labels.expired').'</span>';
+                    $status = '<span class="badge bg-danger text-uppercase">' . __('locale.labels.expired') . '</span>';
                 }
 
 
@@ -123,8 +127,8 @@ class NumberController extends CustomerBaseController
                 $nestedData['uid']           = $number->uid;
                 $nestedData['number']        = $number->number;
                 $nestedData['price']         = "<div>
-                                                        <p class='text-bold-600'>".Tool::format_price($number->price, $number->currency->format)." </p>
-                                                        <p class='text-muted'>".$number->displayFrequencyTime()."</p>
+                                                        <p class='text-bold-600'>" . Tool::format_price($number->price, $number->currency->format) . " </p>
+                                                        <p class='text-muted'>" . $number->displayFrequencyTime() . "</p>
                                                    </div>";
                 $nestedData['status']        = $status;
                 $nestedData['is_assigned']   = $is_assigned;
@@ -134,21 +138,22 @@ class NumberController extends CustomerBaseController
                 $nestedData['renew_label'] = __('locale.labels.renew');
                 $nestedData['renew']       = route('customer.numbers.pay', $number->uid);
                 $nestedData['release']     = __('locale.labels.release');
-                $data[]                    = $nestedData;
+                $nestedData['edit_label'] = __('locale.buttons.edit');
+                $nestedData['edit']       = route('customer.numbers.show', $number->uid);
 
+                $data[]                    = $nestedData;
             }
         }
 
         $json_data = [
-                "draw"            => intval($request->input('draw')),
-                "recordsTotal"    => $totalData,
-                "recordsFiltered" => $totalFiltered,
-                "data"            => $data,
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => $totalData,
+            "recordsFiltered" => $totalFiltered,
+            "data"            => $data,
         ];
 
         echo json_encode($json_data);
         exit();
-
     }
 
     /**
@@ -162,9 +167,9 @@ class NumberController extends CustomerBaseController
         $this->authorize('buy_numbers');
 
         $breadcrumbs = [
-                ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
-                ['link' => url('numbers'), 'name' => __('locale.menu.Numbers')],
-                ['name' => __('locale.phone_numbers.buy_number')],
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
+            ['link' => url('numbers'), 'name' => __('locale.menu.Numbers')],
+            ['name' => __('locale.phone_numbers.buy_number')],
         ];
 
         return view('customer.Numbers.buy', compact('breadcrumbs'));
@@ -182,13 +187,13 @@ class NumberController extends CustomerBaseController
         $this->authorize('buy_numbers');
 
         $columns = [
-                0 => 'responsive_id',
-                1 => 'uid',
-                2 => 'uid',
-                3 => 'number',
-                4 => 'price',
-                5 => 'capabilities',
-                6 => 'actions',
+            0 => 'responsive_id',
+            1 => 'uid',
+            2 => 'uid',
+            3 => 'number',
+            4 => 'price',
+            5 => 'capabilities',
+            6 => 'actions',
         ];
 
         $totalData = PhoneNumbers::where('status', 'available')->count();
@@ -202,24 +207,23 @@ class NumberController extends CustomerBaseController
 
         if (empty($request->input('search.value'))) {
             $numbers = PhoneNumbers::where('status', 'available')->offset($start)
-                                   ->limit($limit)
-                                   ->orderBy($order, $dir)
-                                   ->get();
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
         } else {
             $search = $request->input('search.value');
 
             $numbers = PhoneNumbers::where('status', 'available')->whereLike(['uid', 'number', 'price'], $search)
-                                   ->offset($start)
-                                   ->limit($limit)
-                                   ->orderBy($order, $dir)
-                                   ->get();
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
 
             $totalFiltered = PhoneNumbers::where('status', 'available')->whereLike(['uid', 'number', 'price'], $search)->count();
-
         }
 
         $data = [];
-        if ( ! empty($numbers)) {
+        if (! empty($numbers)) {
             foreach ($numbers as $number) {
 
                 $nestedData['responsive_id'] = '';
@@ -227,26 +231,24 @@ class NumberController extends CustomerBaseController
                 $nestedData['buy']           = __('locale.labels.buy');
                 $nestedData['number']        = $number->number;
                 $nestedData['price']         = "<div>
-                                                        <p class='text-bold-600'>".Tool::format_price($number->price, $number->currency->format)." </p>
-                                                        <p class='text-muted'>".$number->displayFrequencyTime()."</p>
+                                                        <p class='text-bold-600'>" . Tool::format_price($number->price, $number->currency->format) . " </p>
+                                                        <p class='text-muted'>" . $number->displayFrequencyTime() . "</p>
                                                    </div>";
                 $nestedData['checkout']      = route('customer.numbers.pay', $number->uid);
                 $nestedData['capabilities']  = $number->getCapabilities();
                 $data[]                      = $nestedData;
-
             }
         }
 
         $json_data = [
-                "draw"            => intval($request->input('draw')),
-                "recordsTotal"    => $totalData,
-                "recordsFiltered" => $totalFiltered,
-                "data"            => $data,
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => $totalData,
+            "recordsFiltered" => $totalFiltered,
+            "data"            => $data,
         ];
 
         echo json_encode($json_data);
         exit();
-
     }
 
 
@@ -262,8 +264,8 @@ class NumberController extends CustomerBaseController
     {
         if (config('app.stage') == 'demo') {
             return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Sorry! This option is not available in demo mode',
+                'status'  => 'error',
+                'message' => 'Sorry! This option is not available in demo mode',
             ]);
         }
 
@@ -272,10 +274,9 @@ class NumberController extends CustomerBaseController
         $this->numbers->release($phone_number, $id);
 
         return response()->json([
-                'status'  => 'success',
-                'message' => __('locale.phone_numbers.number_successfully_released'),
+            'status'  => 'success',
+            'message' => __('locale.phone_numbers.number_successfully_released'),
         ]);
-
     }
 
     /**
@@ -289,8 +290,8 @@ class NumberController extends CustomerBaseController
     {
         if (config('app.stage') == 'demo') {
             return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Sorry! This option is not available in demo mode',
+                'status'  => 'error',
+                'message' => 'Sorry! This option is not available in demo mode',
             ]);
         }
 
@@ -301,15 +302,15 @@ class NumberController extends CustomerBaseController
             $number->user_id       = 1;
             $number->status        = 'available';
             $number->validity_date = null;
+            $number->device_id = null;
 
             $number->save();
         }
 
         return response()->json([
-                'status'  => 'success',
-                'message' => __('locale.phone_numbers.number_successfully_released'),
+            'status'  => 'success',
+            'message' => __('locale.phone_numbers.number_successfully_released'),
         ]);
-
     }
 
 
@@ -327,14 +328,14 @@ class NumberController extends CustomerBaseController
         $this->authorize('buy_numbers');
 
         $pageConfigs = [
-                'bodyClass' => 'ecommerce-application',
+            'bodyClass' => 'ecommerce-application',
         ];
 
         $breadcrumbs = [
-                ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
-                ['link' => url('dashboard'), 'name' => __('locale.menu.Sending')],
-                ['link' => url('numbers'), 'name' => __('locale.menu.Numbers')],
-                ['name' => __('locale.labels.checkout')],
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Sending')],
+            ['link' => url('numbers'), 'name' => __('locale.menu.Numbers')],
+            ['name' => __('locale.labels.checkout')],
         ];
 
         if ($number->price == '0') {
@@ -342,14 +343,14 @@ class NumberController extends CustomerBaseController
             $paymentMethod = PaymentMethods::where('type', PaymentMethods::TYPE_CASH)->first();
 
             $invoice = Invoices::create([
-                    'user_id'        => auth()->user()->id,
-                    'currency_id'    => $number->currency_id,
-                    'payment_method' => $paymentMethod->id,
-                    'amount'         => $number->price,
-                    'type'           => Invoices::TYPE_NUMBERS,
-                    'description'    => __('locale.phone_numbers.payment_for_number').' '.$number->number,
-                    'transaction_id' => $number->uid,
-                    'status'         => Invoices::STATUS_PAID,
+                'user_id'        => auth()->user()->id,
+                'currency_id'    => $number->currency_id,
+                'payment_method' => $paymentMethod->id,
+                'amount'         => $number->price,
+                'type'           => Invoices::TYPE_NUMBERS,
+                'description'    => __('locale.phone_numbers.payment_for_number') . ' ' . $number->number,
+                'transaction_id' => $number->uid,
+                'status'         => Invoices::STATUS_PAID,
             ]);
 
             if ($invoice) {
@@ -359,16 +360,23 @@ class NumberController extends CustomerBaseController
                 $number->status        = 'assigned';
                 $number->save();
 
-
-                return redirect()->route('customer.numbers.index')->with([
+                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                {
+                    return redirect()->route('customer.numbers.show', $number->uid)->with([
                         'status'  => 'success',
                         'message' => __('locale.payment_gateways.payment_successfully_made'),
+                    ]);
+                }
+
+                return redirect()->route('customer.numbers.index')->with([
+                    'status'  => 'success',
+                    'message' => __('locale.payment_gateways.payment_successfully_made'),
                 ]);
             }
 
             return redirect()->route('customer.numbers.pay', $number->uid)->with([
-                    'status'  => 'error',
-                    'message' => __('locale.exceptions.something_went_wrong'),
+                'status'  => 'error',
+                'message' => __('locale.exceptions.something_went_wrong'),
             ]);
         }
 
@@ -397,17 +405,17 @@ class NumberController extends CustomerBaseController
 
                 if ($request->input('payment_methods') == PaymentMethods::TYPE_BRAINTREE) {
                     return view('customer.Payments.braintree', [
-                            'token'    => $data->getData()->token,
-                            'number'   => $number,
-                            'post_url' => route('customer.numbers.braintree', $number->uid),
+                        'token'    => $data->getData()->token,
+                        'number'   => $number,
+                        'post_url' => route('customer.numbers.braintree', $number->uid),
                     ]);
                 }
 
                 if ($request->input('payment_methods') == PaymentMethods::TYPE_STRIPE) {
                     return view('customer.Payments.stripe', [
-                            'session_id'      => $data->getData()->session_id,
-                            'publishable_key' => $data->getData()->publishable_key,
-                            'number'          => $number,
+                        'session_id'      => $data->getData()->session_id,
+                        'publishable_key' => $data->getData()->publishable_key,
+                        'number'          => $number,
                     ]);
                 }
 
@@ -416,42 +424,42 @@ class NumberController extends CustomerBaseController
                     $months = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'];
 
                     return view('customer.Payments.authorize_net', [
-                            'months'   => $months,
-                            'number'   => $number,
-                            'post_url' => route('customer.numbers.authorize_net', $number->uid),
+                        'months'   => $months,
+                        'number'   => $number,
+                        'post_url' => route('customer.numbers.authorize_net', $number->uid),
                     ]);
                 }
 
                 if ($request->input('payment_methods') == PaymentMethods::TYPE_FEDAPAY) {
                     return view('customer.Payments.fedapay', [
-                            'public_key' => $data->getData()->public_key,
-                            'amount'     => $number->price,
-                            'first_name' => $request->input('first_name'),
-                            'last_name'  => $request->input('last_name'),
-                            'email'      => $request->input('email'),
-                            'item_name'  => __('locale.phone_numbers.payment_for_number').' '.$number->number,
-                            'postData'   => [
-                                    'user_id'      => $number->user_id,
-                                    'request_type' => 'number',
-                                    'post_data'    => $number->uid,
-                            ],
+                        'public_key' => $data->getData()->public_key,
+                        'amount'     => $number->price,
+                        'first_name' => $request->input('first_name'),
+                        'last_name'  => $request->input('last_name'),
+                        'email'      => $request->input('email'),
+                        'item_name'  => __('locale.phone_numbers.payment_for_number') . ' ' . $number->number,
+                        'postData'   => [
+                            'user_id'      => $number->user_id,
+                            'request_type' => 'number',
+                            'post_data'    => $number->uid,
+                        ],
                     ]);
                 }
 
 
                 if ($request->input('payment_methods') == PaymentMethods::TYPE_CASH) {
                     return view('customer.Payments.offline', [
-                            'data'      => $data->getData()->data,
-                            'type'      => 'number',
-                            'post_data' => $number->uid,
+                        'data'      => $data->getData()->data,
+                        'type'      => 'number',
+                        'post_data' => $number->uid,
                     ]);
                 }
 
                 if ($request->input('payment_methods') == PaymentMethods::TYPE_VODACOMMPESA) {
 
                     return view('customer.Payments.vodacom_mpesa', [
-                            'number'   => $number,
-                            'post_url' => route('customer.numbers.vodacommpesa', $number->uid),
+                        'number'   => $number,
+                        'post_url' => route('customer.numbers.vodacommpesa', $number->uid),
                     ]);
                 }
 
@@ -459,23 +467,79 @@ class NumberController extends CustomerBaseController
                     return redirect()->to($data->getData()->redirect_url);
                 } else {
                     return redirect()->route('customer.numbers.pay', $number->uid)->with([
-                            'status'  => 'error',
-                            'message' => 'Redirect URL not found',
+                        'status'  => 'error',
+                        'message' => 'Redirect URL not found',
                     ]);
                 }
-
             }
 
             return redirect()->route('customer.numbers.pay', $number->uid)->with([
-                    'status'  => 'error',
-                    'message' => $data->getData()->message,
+                'status'  => 'error',
+                'message' => $data->getData()->message,
             ]);
         }
 
         return redirect()->route('customer.numbers.pay', $number->uid)->with([
-                'status'  => 'error',
-                'message' => __('locale.exceptions.something_went_wrong'),
+            'status'  => 'error',
+            'message' => __('locale.exceptions.something_went_wrong'),
         ]);
+    }
 
+    /**
+     * update phone number information
+     *
+     * @param  PhoneNumbers  $number
+     *
+     * @return Application|Factory|\Illuminate\Contracts\View\View|RedirectResponse
+     * @throws AuthorizationException
+     */
+
+    public function show(PhoneNumbers $number): \Illuminate\Contracts\View\View|Factory|RedirectResponse|Application
+    {
+        $this->authorize('buy_numbers');
+
+        $breadcrumbs = [
+            ['link' => url('dashboard'), 'name' => __('locale.menu.Dashboard')],
+            ['link' => url('numbers'), 'name' => __('locale.menu.Numbers')],
+            ['name' => __('locale.phone_numbers.update_number')],
+        ];
+
+
+        if ($number->user_id == auth()->id()) {
+            return view('customer.Numbers.show', compact('breadcrumbs', 'number'));
+        }
+
+        return redirect()->route('customer.numbers.index')->with([
+            'status'  => 'error',
+            'message' => __('locale.phone_numbers.phone_number_capabilities_not_found'),
+        ]);
+    }
+
+    public function update(Request $request, PhoneNumbers $number)
+    {
+        $this->authorize('buy_numbers');
+       
+        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+        {
+            $this->validate($request, [
+                'device_id' => 'required|string',
+            ]);
+            
+            $response = Http::accept('application/json')->post($number->sendingServer->api_link . 'mapping/linkDeviceToCRM', [
+                'deviceId' => $request->device_id,
+                'crmApiKey' => $number->sendingServer->auth_token,
+            ]);
+           
+            if($response->status() == 200 && $response->json('success') == true) {
+                $number->update([
+                    'device_id' => $request->device_id,
+                ]);
+            }
+        }
+
+        return redirect()->route('customer.numbers.index')->with([
+            'status'  => 'success',
+            'message' => __('locale.phone_numbers.number_successfully_updated'),
+        ]);
     }
 }

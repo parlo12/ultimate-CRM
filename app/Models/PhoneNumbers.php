@@ -50,7 +50,8 @@ class PhoneNumbers extends Model
             'validity_date',
             'currency_id',
             'transaction_id',
-            'sending_server_id'
+            'sending_server_id',
+            'device_id'
     ];
 
     /**
@@ -193,6 +194,17 @@ class PhoneNumbers extends Model
         }
 
         return $this->frequency_amount.' '.Tool::getPluralParse($this->frequency_unit, $this->frequency_amount);
+    }
+
+    /**
+     * Get the sending server that owns the phone number.
+     *
+     * @return BelongsTo
+     */
+
+    public function sendingServer(): BelongsTo
+    {
+        return $this->belongsTo(SendingServer::class);
     }
 
 }
