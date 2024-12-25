@@ -234,7 +234,6 @@
                 'cost'           => $price,
                 'sending_server' => $sending_server,
                 'sms_type'       => $sms_type,
-                'userId'         => $input['userId'] ?? null, // external userId
                 'external_uuid'  => $input['external_uuid'] ?? null , // external uuid
             ];
 
@@ -329,12 +328,6 @@
                             $mediaUrl = $input['media_url'];
                             $messageData = \array_merge($messageData,['media_url' => $mediaUrl]);
                             Log::info("Media URL $mediaUrl");
-                        }
-
-                        if($data?->status)
-                        {
-                            [$status , $messageId] = explode("|" , $data->status);
-                            $messageData = array_merge($messageData,['external_uuid'  => $messageId]);
                         }
                         
                         ChatBoxMessage::create($messageData);
