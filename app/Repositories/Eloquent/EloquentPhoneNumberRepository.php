@@ -185,6 +185,7 @@
                 $available->user_id       = 1;
                 $available->status        = 'available';
                 $available->validity_date = null;
+                $available->device_id     = null;
                 if ( ! $available->save()) {
                     throw new GeneralException(__('locale.exceptions.something_went_wrong'));
                 }

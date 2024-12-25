@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
@@ -278,32 +279,25 @@ class SendCampaignSMS extends Model
                 case SendingServer::TYPE_WEBSOCKETAPI :
                     $sender_id = str_replace(['(', ')', '+', '-', ' '], '', $data['sender_id']);
                     $phone     = '+' . str_replace(['(', ')', '+', '-', ' '], '', $phone);
-                    $postData = isset($data['reply_by_customer']) && $data['reply_by_customer'] ?
-                    [
-                        'originalMessageId' => $data['external_uuid'],
-                        'content' => $message,
-                        'userId' => $data['userId'],
-                        'origin' => 'CRM' 
-                     ]:[
-                        "sender" => $sender_id,
-                        "receiver"=> $phone,
-                        "content"=> $message,
-                        "userId"=> $data['userId'],
-                        "origin" => 'CRM' 
-                    ] ;
-                    $client = ElephantIOClient::create($gateway_url);
-                    $client->connect();
-                    $socketSentEvent = isset($data['reply_by_customer']) && $data['reply_by_customer'] ?  'replyMessage' : 'message';
-                    $socketReceiveEvent = isset($data['reply_by_customer']) && $data['reply_by_customer'] ?  'newReply' : $data['userId'] ;
-                    $get_sms_status  = 'Rejected';
-                    $client->emit($socketSentEvent, $postData);
-                    
-                    if ($packet = $client->wait($socketReceiveEvent,1)) {
-                        $responseData = $packet->data;
-                        $get_sms_status  = 'Delivered|' . $responseData['messageId'];
+                    if(is_numeric($sender_id))
+                    {
+                        $phoneNumber = PhoneNumbers::whereNumber($sender_id)->first();
+                        if($phoneNumber)
+                        {
+                            // sending the message to the websocket command using cache
+                            $messageObj = [
+                                'phone' => $phone,
+                                'message' => $message,
+                                'device_id' => $phoneNumber->device_id,
+                            ];
+                            $messageObj = json_encode($messageObj);
+                            Cache::put('outgoingSMS', $messageObj, 3600);
+                            $get_sms_status  = 'Delivered';
+                        }                        
                     }
-  
-                    $client->disconnect();
+                    else
+                        $get_sms_status  = 'Rejected';
+                   
                     break;
                     // Twilio case
                 case SendingServer::TYPE_TWILIO:

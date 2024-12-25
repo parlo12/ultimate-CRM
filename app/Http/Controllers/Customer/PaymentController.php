@@ -13,7 +13,8 @@
     use App\Models\PhoneNumbers;
     use App\Models\Plan;
     use App\Models\Senderid;
-    use App\Models\Subscription;
+use App\Models\SendingServer;
+use App\Models\Subscription;
     use App\Models\SubscriptionLog;
     use App\Models\SubscriptionTransaction;
     use App\Models\User;
@@ -3012,6 +3013,14 @@ POSTXML;
 
                             $this->createNotification('number', $number->number, auth()->user()->displayName());
 
+                            if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                            {
+                                return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                    'status'  => 'success',
+                                    'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                ]);
+                            }
+
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',
                                 'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -4167,6 +4176,15 @@ POSTXML;
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                        {
+                                            return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                                'status'  => 'success',
+                                                'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                            ]);
+                                        }
+
+
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
                                             'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -4600,6 +4618,15 @@ POSTXML;
 
                             $this->createNotification('number', $number->number, auth()->user()->displayName());
 
+                            if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                            {
+                                return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                    'status'  => 'success',
+                                    'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                ]);
+                            }
+
+
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',
                                 'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -4692,6 +4719,15 @@ POSTXML;
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                        {
+                                            return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                                'status'  => 'success',
+                                                'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                            ]);
+                                        }
+
+
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
                                             'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -4761,10 +4797,18 @@ POSTXML;
                                     $number->save();
 
                                     $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
-
+                               
                                     if (Helper::app_config('phone_number_notification_email')) {
                                         $admin = User::find(1);
                                         $admin->notify(new NumberPurchase(route('admin.phone-numbers.show', $number->uid)));
+                                    }
+
+                                    if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
                                     }
 
                                     return redirect()->route('customer.numbers.index')->with([
@@ -4819,6 +4863,14 @@ POSTXML;
                             $number->save();
 
                             $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                            if ($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) {
+                                return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                    'status'  => 'success',
+                                    'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                ]);
+                            }
+                            
 
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',
@@ -4876,6 +4928,14 @@ POSTXML;
                                         $number->save();
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                        {
+                                            return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                                'status'  => 'success',
+                                                'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                            ]);
+                                        }
 
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
@@ -4941,6 +5001,14 @@ POSTXML;
                                 $number->save();
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
@@ -5016,6 +5084,14 @@ POSTXML;
                             $number->save();
 
                             $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                            if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',
@@ -5112,6 +5188,14 @@ POSTXML;
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                        {
+                                            return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                                'status'  => 'success',
+                                                'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                            ]);
+                                        }
+
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
                                             'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -5180,6 +5264,14 @@ POSTXML;
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                        {
+                                            return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                                'status'  => 'success',
+                                                'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                            ]);
+                                        }
+
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
                                             'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -5243,6 +5335,14 @@ POSTXML;
                                 $number->save();
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
@@ -5339,6 +5439,14 @@ POSTXML;
                                     $number->save();
 
                                     $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                    if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                     return redirect()->route('customer.numbers.index')->with([
                                         'status'  => 'success',
@@ -5489,6 +5597,14 @@ POSTXML;
 
                                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
                                             'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -5555,6 +5671,14 @@ POSTXML;
                                 $number->save();
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
@@ -5623,6 +5747,14 @@ POSTXML;
                                             $admin = User::find(1);
                                             $admin->notify(new NumberPurchase(route('admin.phone-numbers.show', $number->uid)));
                                         }
+
+                                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                         return redirect()->route('customer.numbers.index')->with([
                                             'status'  => 'success',
@@ -5721,6 +5853,14 @@ POSTXML;
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
                                     'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -5784,6 +5924,14 @@ POSTXML;
                         $number->save();
 
                         $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                         return redirect()->route('customer.numbers.index')->with([
                             'status'  => 'success',
@@ -5896,6 +6044,14 @@ POSTXML;
 
                             $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                            if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',
                                 'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -5975,6 +6131,14 @@ POSTXML;
                                     $number->save();
 
                                     $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                    if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                     return redirect()->route('customer.numbers.index')->with([
                                         'status'  => 'success',
@@ -6056,6 +6220,14 @@ POSTXML;
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
                                     'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -6122,6 +6294,14 @@ POSTXML;
                                 $number->save();
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
+
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
 
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
@@ -9852,6 +10032,14 @@ POSTXML;
 
                                 $this->createNotification('number', $number->number, User::find($number->user_id)->displayName());
 
+                                if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                            'status'  => 'success',
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                                 return redirect()->route('customer.numbers.index')->with([
                                     'status'  => 'success',
                                     'message' => __('locale.payment_gateways.payment_successfully_made'),
@@ -10362,6 +10550,15 @@ POSTXML;
 
                         $this->createNotification('number', $number->number, auth()->user()->displayName());
 
+                        if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                                    {
+                                        return response()->json([
+                                            'status'  => 'success',
+                                            'url'     => route('customer.numbers.show', $number->uid),
+                                            'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                        ]);
+                                    }
+
                         return response()->json([
                             'status'  => 'success',
                             'url'     => route('customer.numbers.index'),
@@ -10595,6 +10792,14 @@ POSTXML;
                             $number->save();
 
                             $this->createNotification('number', $number->number, auth()->user()->displayName());
+
+                            if($number->sendingServer->settings == SendingServer::TYPE_WEBSOCKETAPI) 
+                            {
+                                return redirect()->route('customer.numbers.show', $number->uid)->with([
+                                    'status'  => 'success',
+                                    'message' => __('locale.payment_gateways.payment_successfully_made'),
+                                ]);
+                            }
 
                             return redirect()->route('customer.numbers.index')->with([
                                 'status'  => 'success',

@@ -188,6 +188,8 @@
                             let $actions = '';
 
                             if (full['is_assigned']) {
+                                $actions +=    '<a href="' + full['edit'] + '" class="text-primary" data-bs-toggle="tooltip" data-placement="top" title=' + full['edit_label'] + '>' + feather.icons['edit'].toSvg({class: 'font-medium-4'}) + '</a>'
+
                                 $actions += '<span class="action-release text-danger cursor-pointer" data-bs-toggle="tooltip" data-placement="top" title=' + full['release'] + ' data-id=' + full['uid'] + '>' +
                                     feather.icons['minus-square'].toSvg({class: 'font-medium-4'}) +
                                     '</span>'

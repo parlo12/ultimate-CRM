@@ -364,7 +364,7 @@
                                             </div>
                                         @endif
 
-                                        @if($server['settings'] == SendingServer::TYPE_VIBER || $server['settings'] == SendingServer::TYPE_TEXTGRID || $server['settings'] == SendingServer::TYPE_SMSDENVER)
+                                        @if($server['settings'] == SendingServer::TYPE_VIBER || $server['settings'] == SendingServer::TYPE_TEXTGRID || $server['settings'] == SendingServer::TYPE_SMSDENVER || SendingServer::TYPE_WEBSOCKETAPI )
                                             <div class="col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label required" for="auth_token">Auth

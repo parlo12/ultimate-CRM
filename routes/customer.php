@@ -135,7 +135,7 @@
     Route::post('numbers/release/{id}', 'NumberController@release')->name('numbers.release');
     Route::post('numbers/batch_action', 'NumberController@batchAction')->name('numbers.batch_action');
     Route::resource('numbers', 'NumberController', [
-        'only' => ['index'],
+        'only' => ['index','show','update'],
     ]);
 
     Route::get('numbers/{number}/pay', 'NumberController@pay')->name('numbers.pay');

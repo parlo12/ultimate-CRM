@@ -652,30 +652,6 @@
         }
         
 
-        function getUserId() {
-            const email = "{{ auth()->user()?->email }}";
-
-            $.ajax({
-                url: `http://localhost:4000/users/register`,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ email: email }),
-                success: function(response) {
-                    $("<input>").attr({
-                        name: "userId",
-                        id: "userId",
-                        type: "hidden",
-                        value: response.data._id
-                    }).appendTo("form");
-                },
-                error: function(reject) {
-                    console.log("An error occurred during registration.", "{{ __('locale.labels.attention') }}");
-                }
-            });
-        }
-
-        getUserId();
-
         // Add message to chat
         function enter_chat() {
             let message = $(".message"),
