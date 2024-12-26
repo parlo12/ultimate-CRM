@@ -71,3 +71,5 @@
     */
 
     Route::get('campaign/{uid}/view', 'CampaignController@viewCampaign')->name('campaign.view');
+
+ 

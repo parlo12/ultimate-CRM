@@ -129,6 +129,7 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'FedaPay\\' => array($vendorDir . '/fedapay/fedapay-php/lib'),
     'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
+    'ElephantIO\\' => array($vendorDir . '/elephantio/elephant.io/src'),
     'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Inflector'),
