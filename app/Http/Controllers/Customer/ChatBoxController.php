@@ -576,7 +576,6 @@ class ChatBoxController extends Controller
             'exist_c_code'   => 'yes',
             'user'           => $user,
             'media_url'      => $media_url,
-            'userId'         => $request->userId,
             'external_uuid'  => $box->lastChatBoxMessage
         ];
 

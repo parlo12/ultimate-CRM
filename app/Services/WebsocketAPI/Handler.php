@@ -13,7 +13,7 @@ class Handler
     {
         match ($eventName) {
             'sms' => $this->handleSmsEvent(...$data),
-            'deliveryStatus' => $this->handleDeliveryStatusEvent(...$data),
+        //    'deliveryStatus' => $this->handleDeliveryStatusEvent(...$data),
             default => $this->handleDefault($data),
         };
     }
@@ -24,14 +24,25 @@ class Handler
         if ($number) {
             $sending_server = $number->sendingServer;
 
-            $chatbox = ChatBox::firstOrNew([
+            $chatbox = ChatBox::where([
                 'user_id'           => $number->user_id,
-                'from'              => $number->number,
-                'to'                => $sender,
                 'sending_server_id' => $sending_server->id,
-            ]);
+            ])->where(function($query) use ($sender, $number) {
+                $query->where(function($query) use ($sender) {
+                    $query->where('from', $sender)->orWhere('to', $sender);
+                })->where(function($query) use ($number) {
+                    $query->where('from', $number->number)->orWhere('to', $number->number);
+                });
+            })->first();
 
-            if (! $chatbox->exists) {
+            
+            if (! $chatbox) {
+                $chatbox = new ChatBox([
+                    'user_id'           => $number->user_id,
+                    'from'              => $number->number,
+                    'to'                => $sender,
+                    'sending_server_id' => $sending_server->id,
+                ]);
                 $chatbox->reply_by_customer = true;
                 $chatbox->save();
             }
@@ -39,7 +50,7 @@ class Handler
             $messageData  = [
                 'box_id'            => $chatbox->id,
                 'message'           => $content,
-                'send_by'           => 'to',
+                'send_by'           => $chatbox->from == $sender ? 'from' : 'to',
                 'sms_type'          => 'plain',
                 'sending_server_id' => $sending_server->id,
                 'external_uuid'     => $messageId,
