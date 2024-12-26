@@ -657,12 +657,10 @@
                 chatBoxId = $(".chat_id").val(),
                 messageValue = message.val(),
                 fileInput = document.getElementById('file-upload'),
-                userId = $('input[name="userId"]')[0].value,
                 formData = new FormData();
                 
 
             formData.append('message', messageValue);
-            formData.append('userId', userId);
             formData.append('_token', "{{ csrf_token() }}");
             formData.append('file', fileInput.files[0]); // Append file from file input
 
