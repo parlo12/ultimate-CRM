@@ -213,6 +213,7 @@ abstract class AbstractPlatform
 
         foreach (Type::getTypesMap() as $typeName => $className) {
             foreach (Type::getType($typeName)->getMappedDatabaseTypes($this) as $dbType) {
+                $dbType                             = strtolower($dbType);
                 $this->doctrineTypeMapping[$dbType] = $typeName;
             }
         }
@@ -4690,6 +4691,11 @@ abstract class AbstractPlatform
 
         if ($column1->getComment() !== $column2->getComment()) {
             return false;
+        }
+
+        // If disableTypeComments is true, we do not need to check types, all comparison is already done above
+        if ($this->disableTypeComments) {
+            return true;
         }
 
         return $column1->getType() === $column2->getType();

@@ -25,6 +25,7 @@ class Transaction extends Resource
     use ApiOperations\Search;
     use ApiOperations\Retrieve;
     use ApiOperations\Create;
+    use ApiOperations\CreateInBatch;
     use ApiOperations\Update;
     use ApiOperations\Save;
     use ApiOperations\Delete;
@@ -35,7 +36,7 @@ class Transaction extends Resource
      */
     private static $AVAILABLE_MOBILE_MONEY = [
         'mtn', 'moov', 'mtn_ci', 'moov_tg', 'mtn_open', 'airtel_ne', 'free_sn',
-        'togocel', 'mtn_ecw'
+        'togocel', 'mtn_ecw', 'mtn_open_ci', 'wave_direct_ci'
     ];
 
     /**

@@ -4,7 +4,9 @@ namespace Laravel\Horizon\Console;
 
 use Illuminate\Console\Command;
 use Laravel\Horizon\Contracts\MasterSupervisorRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'horizon:status')]
 class StatusCommand extends Command
 {
     /**
@@ -32,7 +34,7 @@ class StatusCommand extends Command
         if (! $masters = $masterSupervisorRepository->all()) {
             $this->components->error('Horizon is inactive.');
 
-            return 1;
+            return 2;
         }
 
         if (collect($masters)->contains(function ($master) {

@@ -10,9 +10,9 @@ use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\Doctrine;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\ParserConfig;
 use PHPStan\ShouldNotHappenException;
 use function array_key_exists;
-use function array_values;
 use function count;
 use function rtrim;
 use function str_replace;
@@ -29,55 +29,24 @@ class PhpDocParser
 		Lexer::TOKEN_INTERSECTION,
 	];
 
-	/** @var TypeParser */
-	private $typeParser;
+	private ParserConfig $config;
 
-	/** @var ConstExprParser */
-	private $constantExprParser;
+	private TypeParser $typeParser;
 
-	/** @var ConstExprParser */
-	private $doctrineConstantExprParser;
+	private ConstExprParser $constantExprParser;
 
-	/** @var bool */
-	private $requireWhitespaceBeforeDescription;
+	private ConstExprParser $doctrineConstantExprParser;
 
-	/** @var bool */
-	private $preserveTypeAliasesWithInvalidTypes;
-
-	/** @var bool */
-	private $parseDoctrineAnnotations;
-
-	/** @var bool */
-	private $useLinesAttributes;
-
-	/** @var bool */
-	private $useIndexAttributes;
-
-	/** @var bool */
-	private $textBetweenTagsBelongsToDescription;
-
-	/**
-	 * @param array{lines?: bool, indexes?: bool} $usedAttributes
-	 */
 	public function __construct(
+		ParserConfig $config,
 		TypeParser $typeParser,
-		ConstExprParser $constantExprParser,
-		bool $requireWhitespaceBeforeDescription = false,
-		bool $preserveTypeAliasesWithInvalidTypes = false,
-		array $usedAttributes = [],
-		bool $parseDoctrineAnnotations = false,
-		bool $textBetweenTagsBelongsToDescription = false
+		ConstExprParser $constantExprParser
 	)
 	{
+		$this->config = $config;
 		$this->typeParser = $typeParser;
 		$this->constantExprParser = $constantExprParser;
 		$this->doctrineConstantExprParser = $constantExprParser->toDoctrine();
-		$this->requireWhitespaceBeforeDescription = $requireWhitespaceBeforeDescription;
-		$this->preserveTypeAliasesWithInvalidTypes = $preserveTypeAliasesWithInvalidTypes;
-		$this->parseDoctrineAnnotations = $parseDoctrineAnnotations;
-		$this->useLinesAttributes = $usedAttributes['lines'] ?? false;
-		$this->useIndexAttributes = $usedAttributes['indexes'] ?? false;
-		$this->textBetweenTagsBelongsToDescription = $textBetweenTagsBelongsToDescription;
 	}
 
 
@@ -88,44 +57,35 @@ class PhpDocParser
 
 		$children = [];
 
-		if ($this->parseDoctrineAnnotations) {
-			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-				$lastChild = $this->parseChild($tokens);
-				$children[] = $lastChild;
-				while (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-					if (
-						$lastChild instanceof Ast\PhpDoc\PhpDocTagNode
-						&& (
-							$lastChild->value instanceof Doctrine\DoctrineTagValueNode
-							|| $lastChild->value instanceof Ast\PhpDoc\GenericTagValueNode
-						)
-					) {
-						$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-						if ($tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-							break;
-						}
-						$lastChild = $this->parseChild($tokens);
-						$children[] = $lastChild;
-						continue;
-					}
-
-					if (!$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
-						break;
-					}
+		if (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
+			$lastChild = $this->parseChild($tokens);
+			$children[] = $lastChild;
+			while (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
+				if (
+					$lastChild instanceof Ast\PhpDoc\PhpDocTagNode
+					&& (
+						$lastChild->value instanceof Doctrine\DoctrineTagValueNode
+						|| $lastChild->value instanceof Ast\PhpDoc\GenericTagValueNode
+					)
+				) {
+					$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
 					if ($tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
 						break;
 					}
-
 					$lastChild = $this->parseChild($tokens);
 					$children[] = $lastChild;
+					continue;
 				}
-			}
-		} else {
-			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-				$children[] = $this->parseChild($tokens);
-				while ($tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL) && !$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-					$children[] = $this->parseChild($tokens);
+
+				if (!$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+					break;
 				}
+				if ($tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
+					break;
+				}
+
+				$lastChild = $this->parseChild($tokens);
+				$children[] = $lastChild;
 			}
 		}
 
@@ -150,8 +110,8 @@ class PhpDocParser
 					$tokens,
 					new Ast\PhpDoc\InvalidTagValueNode($e->getMessage(), $e),
 					$startLine,
-					$startIndex
-				)
+					$startIndex,
+				),
 			);
 
 			$tokens->forwardToTheEnd();
@@ -159,7 +119,7 @@ class PhpDocParser
 			return $this->enrichWithAttributes($tokens, new Ast\PhpDoc\PhpDocNode([$this->enrichWithAttributes($tokens, $tag, $startLine, $startIndex)]), 1, 0);
 		}
 
-		return $this->enrichWithAttributes($tokens, new Ast\PhpDoc\PhpDocNode(array_values($children)), 1, 0);
+		return $this->enrichWithAttributes($tokens, new Ast\PhpDoc\PhpDocNode($children), 1, 0);
 	}
 
 
@@ -187,8 +147,8 @@ class PhpDocParser
 					$tokens,
 					$this->parseDoctrineTagValue($tokens, $tag),
 					$tagStartLine,
-					$tagStartIndex
-				)
+					$tagStartIndex,
+				),
 			), $startLine, $startIndex);
 		}
 
@@ -206,12 +166,12 @@ class PhpDocParser
 	 */
 	private function enrichWithAttributes(TokenIterator $tokens, Ast\Node $tag, int $startLine, int $startIndex): Ast\Node
 	{
-		if ($this->useLinesAttributes) {
+		if ($this->config->useLinesAttributes) {
 			$tag->setAttribute(Ast\Attribute::START_LINE, $startLine);
 			$tag->setAttribute(Ast\Attribute::END_LINE, $tokens->currentTokenLine());
 		}
 
-		if ($this->useIndexAttributes) {
+		if ($this->config->useIndexAttributes) {
 			$tag->setAttribute(Ast\Attribute::START_INDEX, $startIndex);
 			$tag->setAttribute(Ast\Attribute::END_INDEX, $tokens->endIndexOfLastRelevantToken());
 		}
@@ -224,31 +184,26 @@ class PhpDocParser
 	{
 		$text = '';
 
-		$endTokens = [Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
-		if ($this->textBetweenTagsBelongsToDescription) {
-			$endTokens = [Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
-		}
+		$endTokens = [Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
 
 		$savepoint = false;
 
 		// if the next token is EOL, everything below is skipped and empty string is returned
-		while ($this->textBetweenTagsBelongsToDescription || !$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+		while (true) {
 			$tmpText = $tokens->getSkippedHorizontalWhiteSpaceIfAny() . $tokens->joinUntil(Lexer::TOKEN_PHPDOC_EOL, ...$endTokens);
 			$text .= $tmpText;
 
 			// stop if we're not at EOL - meaning it's the end of PHPDoc
-			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC)) {
 				break;
 			}
 
-			if ($this->textBetweenTagsBelongsToDescription) {
-				if (!$savepoint) {
-					$tokens->pushSavePoint();
-					$savepoint = true;
-				} elseif ($tmpText !== '') {
-					$tokens->dropSavePoint();
-					$tokens->pushSavePoint();
-				}
+			if (!$savepoint) {
+				$tokens->pushSavePoint();
+				$savepoint = true;
+			} elseif ($tmpText !== '') {
+				$tokens->dropSavePoint();
+				$tokens->pushSavePoint();
 			}
 
 			$tokens->pushSavePoint();
@@ -280,20 +235,17 @@ class PhpDocParser
 	{
 		$text = '';
 
-		$endTokens = [Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
-		if ($this->textBetweenTagsBelongsToDescription) {
-			$endTokens = [Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
-		}
+		$endTokens = [Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END];
 
 		$savepoint = false;
 
 		// if the next token is EOL, everything below is skipped and empty string is returned
-		while ($this->textBetweenTagsBelongsToDescription || !$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+		while (true) {
 			$tmpText = $tokens->getSkippedHorizontalWhiteSpaceIfAny() . $tokens->joinUntil(Lexer::TOKEN_PHPDOC_TAG, Lexer::TOKEN_DOCTRINE_TAG, Lexer::TOKEN_PHPDOC_EOL, ...$endTokens);
 			$text .= $tmpText;
 
 			// stop if we're not at EOL - meaning it's the end of PHPDoc
-			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC)) {
 				if (!$tokens->isPrecededByHorizontalWhitespace()) {
 					return trim($text . $this->parseText($tokens)->text, " \t");
 				}
@@ -327,14 +279,12 @@ class PhpDocParser
 				break;
 			}
 
-			if ($this->textBetweenTagsBelongsToDescription) {
-				if (!$savepoint) {
-					$tokens->pushSavePoint();
-					$savepoint = true;
-				} elseif ($tmpText !== '') {
-					$tokens->dropSavePoint();
-					$tokens->pushSavePoint();
-				}
+			if (!$savepoint) {
+				$tokens->pushSavePoint();
+				$savepoint = true;
+			} elseif ($tmpText !== '') {
+				$tokens->dropSavePoint();
+				$tokens->pushSavePoint();
 			}
 
 			$tokens->pushSavePoint();
@@ -384,18 +334,42 @@ class PhpDocParser
 				case '@param':
 				case '@phpstan-param':
 				case '@psalm-param':
+				case '@phan-param':
 					$tagValue = $this->parseParamTagValue($tokens);
+					break;
+
+				case '@param-immediately-invoked-callable':
+				case '@phpstan-param-immediately-invoked-callable':
+					$tagValue = $this->parseParamImmediatelyInvokedCallableTagValue($tokens);
+					break;
+
+				case '@param-later-invoked-callable':
+				case '@phpstan-param-later-invoked-callable':
+					$tagValue = $this->parseParamLaterInvokedCallableTagValue($tokens);
+					break;
+
+				case '@param-closure-this':
+				case '@phpstan-param-closure-this':
+					$tagValue = $this->parseParamClosureThisTagValue($tokens);
+					break;
+
+				case '@pure-unless-callable-is-impure':
+				case '@phpstan-pure-unless-callable-is-impure':
+					$tagValue = $this->parsePureUnlessCallableIsImpureTagValue($tokens);
 					break;
 
 				case '@var':
 				case '@phpstan-var':
 				case '@psalm-var':
+				case '@phan-var':
 					$tagValue = $this->parseVarTagValue($tokens);
 					break;
 
 				case '@return':
 				case '@phpstan-return':
 				case '@psalm-return':
+				case '@phan-return':
+				case '@phan-real-return':
 					$tagValue = $this->parseReturnTagValue($tokens);
 					break;
 
@@ -405,6 +379,7 @@ class PhpDocParser
 					break;
 
 				case '@mixin':
+				case '@phan-mixin':
 					$tagValue = $this->parseMixinTagValue($tokens);
 					break;
 
@@ -431,18 +406,23 @@ class PhpDocParser
 				case '@psalm-property':
 				case '@psalm-property-read':
 				case '@psalm-property-write':
+				case '@phan-property':
+				case '@phan-property-read':
+				case '@phan-property-write':
 					$tagValue = $this->parsePropertyTagValue($tokens);
 					break;
 
 				case '@method':
 				case '@phpstan-method':
 				case '@psalm-method':
+				case '@phan-method':
 					$tagValue = $this->parseMethodTagValue($tokens);
 					break;
 
 				case '@template':
 				case '@phpstan-template':
 				case '@psalm-template':
+				case '@phan-template':
 				case '@template-covariant':
 				case '@phpstan-template-covariant':
 				case '@psalm-template-covariant':
@@ -451,14 +431,14 @@ class PhpDocParser
 				case '@psalm-template-contravariant':
 					$tagValue = $this->typeParser->parseTemplateTagValue(
 						$tokens,
-						function ($tokens) {
-							return $this->parseOptionalDescription($tokens);
-						}
+						fn ($tokens) => $this->parseOptionalDescription($tokens, true),
 					);
 					break;
 
 				case '@extends':
 				case '@phpstan-extends':
+				case '@phan-extends':
+				case '@phan-inherits':
 				case '@template-extends':
 					$tagValue = $this->parseExtendsTagValue('@extends', $tokens);
 					break;
@@ -477,6 +457,7 @@ class PhpDocParser
 
 				case '@phpstan-type':
 				case '@psalm-type':
+				case '@phan-type':
 					$tagValue = $this->parseTypeAliasTagValue($tokens);
 					break;
 
@@ -491,6 +472,9 @@ class PhpDocParser
 				case '@psalm-assert':
 				case '@psalm-assert-if-true':
 				case '@psalm-assert-if-false':
+				case '@phan-assert':
+				case '@phan-assert-if-true':
+				case '@phan-assert-if-false':
 					$tagValue = $this->parseAssertTagValue($tokens);
 					break;
 
@@ -508,17 +492,11 @@ class PhpDocParser
 					break;
 
 				default:
-					if ($this->parseDoctrineAnnotations) {
-						if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_PARENTHESES)) {
-							$tagValue = $this->parseDoctrineTagValue($tokens, $tag);
-						} else {
-							$tagValue = new Ast\PhpDoc\GenericTagValueNode($this->parseOptionalDescriptionAfterDoctrineTag($tokens));
-						}
-						break;
+					if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_PARENTHESES)) {
+						$tagValue = $this->parseDoctrineTagValue($tokens, $tag);
+					} else {
+						$tagValue = new Ast\PhpDoc\GenericTagValueNode($this->parseOptionalDescriptionAfterDoctrineTag($tokens));
 					}
-
-					$tagValue = new Ast\PhpDoc\GenericTagValueNode($this->parseOptionalDescription($tokens));
-
 					break;
 			}
 
@@ -526,7 +504,7 @@ class PhpDocParser
 
 		} catch (ParserException $e) {
 			$tokens->rollback();
-			$tagValue = new Ast\PhpDoc\InvalidTagValueNode($this->parseOptionalDescription($tokens), $e);
+			$tagValue = new Ast\PhpDoc\InvalidTagValueNode($this->parseOptionalDescription($tokens, false), $e);
 		}
 
 		return $this->enrichWithAttributes($tokens, $tagValue, $startLine, $startIndex);
@@ -543,9 +521,9 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineAnnotation($tag, $this->parseDoctrineArguments($tokens, false)),
 				$startLine,
-				$startIndex
+				$startIndex,
 			),
-			$this->parseOptionalDescriptionAfterDoctrineTag($tokens)
+			$this->parseOptionalDescriptionAfterDoctrineTag($tokens),
 		);
 	}
 
@@ -596,7 +574,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArgument(null, $this->parseDoctrineArgumentValue($tokens)),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		}
 
@@ -612,7 +590,7 @@ class PhpDocParser
 				$tokens,
 				new IdentifierTypeNode($currentValue),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 			$tokens->consumeTokenType(Lexer::TOKEN_EQUAL);
 
@@ -624,7 +602,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArgument($key, $value),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		} catch (ParserException $e) {
 			$tokens->rollback();
@@ -633,7 +611,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArgument(null, $this->parseDoctrineArgumentValue($tokens)),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		}
 	}
@@ -655,7 +633,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineAnnotation($name, $this->parseDoctrineArguments($tokens, true)),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		}
 
@@ -674,7 +652,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArray($items),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		}
 
@@ -685,7 +663,7 @@ class PhpDocParser
 				$tokens,
 				new Ast\Type\IdentifierTypeNode($currentTokenValue),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_DOUBLE_COLON)) {
 				$tokens->dropSavePoint();
@@ -703,7 +681,7 @@ class PhpDocParser
 		$currentTokenLine = $tokens->currentTokenLine();
 
 		try {
-			$constExpr = $this->doctrineConstantExprParser->parse($tokens, true);
+			$constExpr = $this->doctrineConstantExprParser->parse($tokens);
 			if ($constExpr instanceof Ast\ConstExpr\ConstExprArrayNode) {
 				throw new ParserException(
 					$currentTokenValue,
@@ -711,7 +689,7 @@ class PhpDocParser
 					$currentTokenOffset,
 					Lexer::TOKEN_IDENTIFIER,
 					null,
-					$currentTokenLine
+					$currentTokenLine,
 				);
 			}
 
@@ -723,7 +701,7 @@ class PhpDocParser
 				$currentTokenOffset,
 				Lexer::TOKEN_IDENTIFIER,
 				null,
-				$currentTokenLine
+				$currentTokenLine,
 			);
 		}
 	}
@@ -752,7 +730,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArrayItem($key, $value),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		} catch (ParserException $e) {
 			$tokens->rollback();
@@ -761,7 +739,7 @@ class PhpDocParser
 				$tokens,
 				new Doctrine\DoctrineArrayItem(null, $this->parseDoctrineArgumentValue($tokens)),
 				$startLine,
-				$startIndex
+				$startIndex,
 			);
 		}
 	}
@@ -780,8 +758,12 @@ class PhpDocParser
 			$tokens->next();
 
 		} elseif ($tokens->isCurrentTokenType(Lexer::TOKEN_DOCTRINE_ANNOTATION_STRING)) {
-			$key = new Ast\ConstExpr\DoctrineConstExprStringNode(Ast\ConstExpr\DoctrineConstExprStringNode::unescape($tokens->currentTokenValue()));
+			$key = $this->doctrineConstantExprParser->parseDoctrineString($tokens->currentTokenValue(), $tokens);
 
+			$tokens->next();
+
+		} elseif ($tokens->isCurrentTokenType(Lexer::TOKEN_SINGLE_QUOTED_STRING)) {
+			$key = new Ast\ConstExpr\ConstExprStringNode(StringUnescaper::unescapeString($tokens->currentTokenValue()), Ast\ConstExpr\ConstExprStringNode::SINGLE_QUOTED);
 			$tokens->next();
 
 		} elseif ($tokens->isCurrentTokenType(Lexer::TOKEN_DOUBLE_QUOTED_STRING)) {
@@ -800,7 +782,7 @@ class PhpDocParser
 					$tokens->currentTokenOffset(),
 					Lexer::TOKEN_IDENTIFIER,
 					null,
-					$tokens->currentTokenLine()
+					$tokens->currentTokenLine(),
 				);
 			}
 
@@ -811,12 +793,12 @@ class PhpDocParser
 					$tokens,
 					new IdentifierTypeNode($currentTokenValue),
 					$startLine,
-					$startIndex
+					$startIndex,
 				);
 			}
 
 			$tokens->rollback();
-			$constExpr = $this->doctrineConstantExprParser->parse($tokens, true);
+			$constExpr = $this->doctrineConstantExprParser->parse($tokens);
 			if (!$constExpr instanceof Ast\ConstExpr\ConstFetchNode) {
 				throw new ParserException(
 					$tokens->currentTokenValue(),
@@ -824,7 +806,7 @@ class PhpDocParser
 					$tokens->currentTokenOffset(),
 					Lexer::TOKEN_IDENTIFIER,
 					null,
-					$tokens->currentTokenLine()
+					$tokens->currentTokenLine(),
 				);
 			}
 
@@ -851,7 +833,7 @@ class PhpDocParser
 		$isReference = $tokens->tryConsumeTokenType(Lexer::TOKEN_REFERENCE);
 		$isVariadic = $tokens->tryConsumeTokenType(Lexer::TOKEN_VARIADIC);
 		$parameterName = $this->parseRequiredVariableName($tokens);
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 
 		if ($type !== null) {
 			return new Ast\PhpDoc\ParamTagValueNode($type, $isVariadic, $parameterName, $description, $isReference);
@@ -860,6 +842,41 @@ class PhpDocParser
 		return new Ast\PhpDoc\TypelessParamTagValueNode($isVariadic, $parameterName, $description, $isReference);
 	}
 
+
+	private function parseParamImmediatelyInvokedCallableTagValue(TokenIterator $tokens): Ast\PhpDoc\ParamImmediatelyInvokedCallableTagValueNode
+	{
+		$parameterName = $this->parseRequiredVariableName($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
+
+		return new Ast\PhpDoc\ParamImmediatelyInvokedCallableTagValueNode($parameterName, $description);
+	}
+
+
+	private function parseParamLaterInvokedCallableTagValue(TokenIterator $tokens): Ast\PhpDoc\ParamLaterInvokedCallableTagValueNode
+	{
+		$parameterName = $this->parseRequiredVariableName($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
+
+		return new Ast\PhpDoc\ParamLaterInvokedCallableTagValueNode($parameterName, $description);
+	}
+
+
+	private function parseParamClosureThisTagValue(TokenIterator $tokens): Ast\PhpDoc\ParamClosureThisTagValueNode
+	{
+		$type = $this->typeParser->parse($tokens);
+		$parameterName = $this->parseRequiredVariableName($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
+
+		return new Ast\PhpDoc\ParamClosureThisTagValueNode($type, $parameterName, $description);
+	}
+
+	private function parsePureUnlessCallableIsImpureTagValue(TokenIterator $tokens): Ast\PhpDoc\PureUnlessCallableIsImpureTagValueNode
+	{
+		$parameterName = $this->parseRequiredVariableName($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
+
+		return new Ast\PhpDoc\PureUnlessCallableIsImpureTagValueNode($parameterName, $description);
+	}
 
 	private function parseVarTagValue(TokenIterator $tokens): Ast\PhpDoc\VarTagValueNode
 	{
@@ -908,7 +925,7 @@ class PhpDocParser
 
 	private function parseDeprecatedTagValue(TokenIterator $tokens): Ast\PhpDoc\DeprecatedTagValueNode
 	{
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 		return new Ast\PhpDoc\DeprecatedTagValueNode($description);
 	}
 
@@ -917,7 +934,7 @@ class PhpDocParser
 	{
 		$type = $this->typeParser->parse($tokens);
 		$parameterName = $this->parseRequiredVariableName($tokens);
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 		return new Ast\PhpDoc\PropertyTagValueNode($type, $parameterName, $description);
 	}
 
@@ -960,7 +977,7 @@ class PhpDocParser
 					$tokens,
 					$this->typeParser->parseTemplateTagValue($tokens),
 					$startLine,
-					$startIndex
+					$startIndex,
 				);
 			} while ($tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA));
 			$tokens->consumeTokenType(Lexer::TOKEN_CLOSE_ANGLE_BRACKET);
@@ -976,7 +993,7 @@ class PhpDocParser
 		}
 		$tokens->consumeTokenType(Lexer::TOKEN_CLOSE_PARENTHESES);
 
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 		return new Ast\PhpDoc\MethodTagValueNode($isStatic, $returnType, $methodName, $parameters, $description, $templateTypes);
 	}
 
@@ -1013,7 +1030,7 @@ class PhpDocParser
 			$tokens,
 			new Ast\PhpDoc\MethodTagValueParameterNode($parameterType, $isReference, $isVariadic, $parameterName, $defaultValue),
 			$startLine,
-			$startIndex
+			$startIndex,
 		);
 	}
 
@@ -1026,10 +1043,10 @@ class PhpDocParser
 
 		$type = $this->typeParser->parseGeneric(
 			$tokens,
-			$this->typeParser->enrichWithAttributes($tokens, $baseType, $startLine, $startIndex)
+			$this->typeParser->enrichWithAttributes($tokens, $baseType, $startLine, $startIndex),
 		);
 
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, true);
 
 		switch ($tagName) {
 			case '@extends':
@@ -1048,40 +1065,34 @@ class PhpDocParser
 		$alias = $tokens->currentTokenValue();
 		$tokens->consumeTokenType(Lexer::TOKEN_IDENTIFIER);
 
-		// support psalm-type syntax
+		// support phan-type/psalm-type syntax
 		$tokens->tryConsumeTokenType(Lexer::TOKEN_EQUAL);
 
-		if ($this->preserveTypeAliasesWithInvalidTypes) {
-			$startLine = $tokens->currentTokenLine();
-			$startIndex = $tokens->currentTokenIndex();
-			try {
-				$type = $this->typeParser->parse($tokens);
-				if (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
-					if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
-						throw new ParserException(
-							$tokens->currentTokenValue(),
-							$tokens->currentTokenType(),
-							$tokens->currentTokenOffset(),
-							Lexer::TOKEN_PHPDOC_EOL,
-							null,
-							$tokens->currentTokenLine()
-						);
-					}
+		$startLine = $tokens->currentTokenLine();
+		$startIndex = $tokens->currentTokenIndex();
+		try {
+			$type = $this->typeParser->parse($tokens);
+			if (!$tokens->isCurrentTokenType(Lexer::TOKEN_CLOSE_PHPDOC)) {
+				if (!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL)) {
+					throw new ParserException(
+						$tokens->currentTokenValue(),
+						$tokens->currentTokenType(),
+						$tokens->currentTokenOffset(),
+						Lexer::TOKEN_PHPDOC_EOL,
+						null,
+						$tokens->currentTokenLine(),
+					);
 				}
-
-				return new Ast\PhpDoc\TypeAliasTagValueNode($alias, $type);
-			} catch (ParserException $e) {
-				$this->parseOptionalDescription($tokens);
-				return new Ast\PhpDoc\TypeAliasTagValueNode(
-					$alias,
-					$this->enrichWithAttributes($tokens, new Ast\Type\InvalidTypeNode($e), $startLine, $startIndex)
-				);
 			}
+
+			return new Ast\PhpDoc\TypeAliasTagValueNode($alias, $type);
+		} catch (ParserException $e) {
+			$this->parseOptionalDescription($tokens, false);
+			return new Ast\PhpDoc\TypeAliasTagValueNode(
+				$alias,
+				$this->enrichWithAttributes($tokens, new Ast\Type\InvalidTypeNode($e), $startLine, $startIndex),
+			);
 		}
-
-		$type = $this->typeParser->parse($tokens);
-
-		return new Ast\PhpDoc\TypeAliasTagValueNode($alias, $type);
 	}
 
 	private function parseTypeAliasImportTagValue(TokenIterator $tokens): Ast\PhpDoc\TypeAliasImportTagValueNode
@@ -1099,7 +1110,7 @@ class PhpDocParser
 			$tokens,
 			new IdentifierTypeNode($importedFrom),
 			$identifierStartLine,
-			$identifierStartIndex
+			$identifierStartIndex,
 		);
 
 		$importedAs = null;
@@ -1120,7 +1131,7 @@ class PhpDocParser
 		$isEquality = $tokens->tryConsumeTokenType(Lexer::TOKEN_EQUAL);
 		$type = $this->typeParser->parse($tokens);
 		$parameter = $this->parseAssertParameter($tokens);
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 
 		if (array_key_exists('method', $parameter)) {
 			return new Ast\PhpDoc\AssertTagMethodValueNode($type, $parameter['parameter'], $parameter['method'], $isNegated, $description, $isEquality);
@@ -1165,7 +1176,7 @@ class PhpDocParser
 	private function parseSelfOutTagValue(TokenIterator $tokens): Ast\PhpDoc\SelfOutTagValueNode
 	{
 		$type = $this->typeParser->parse($tokens);
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, true);
 
 		return new Ast\PhpDoc\SelfOutTagValueNode($type, $description);
 	}
@@ -1174,7 +1185,7 @@ class PhpDocParser
 	{
 		$type = $this->typeParser->parse($tokens);
 		$parameterName = $this->parseRequiredVariableName($tokens);
-		$description = $this->parseOptionalDescription($tokens);
+		$description = $this->parseOptionalDescription($tokens, false);
 
 		return new Ast\PhpDoc\ParamOutTagValueNode($type, $parameterName, $description);
 	}
@@ -1204,7 +1215,10 @@ class PhpDocParser
 		return $parameterName;
 	}
 
-	private function parseOptionalDescription(TokenIterator $tokens, bool $limitStartToken = false): string
+	/**
+	 * @param bool $limitStartToken true should be used when the description immediately follows a parsed type
+	 */
+	private function parseOptionalDescription(TokenIterator $tokens, bool $limitStartToken): string
 	{
 		if ($limitStartToken) {
 			foreach (self::DISALLOWED_DESCRIPTION_START_TOKENS as $disallowedStartToken) {
@@ -1216,8 +1230,7 @@ class PhpDocParser
 			}
 
 			if (
-				$this->requireWhitespaceBeforeDescription
-				&& !$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END)
+				!$tokens->isCurrentTokenType(Lexer::TOKEN_PHPDOC_EOL, Lexer::TOKEN_CLOSE_PHPDOC, Lexer::TOKEN_END)
 				&& !$tokens->isPrecededByHorizontalWhitespace()
 			) {
 				$tokens->consumeTokenType(Lexer::TOKEN_HORIZONTAL_WS); // will throw exception

@@ -1,5 +1,686 @@
 # CHANGELOG
 
+## 1.8.2236 - 2024-12-26
+- CreateJob and UpdateJob support ExecutorBlockStrategy.
+- TimeType support fixed_delay.
+- ListJobs support return LastExecuteEndTime, LastExecuteStatus and CurrentExecuteStatus.
+
+
+## 1.8.2235 - 2024-12-25
+-- Supported DeleteEip
+
+
+## 1.8.2234 - 2024-12-24
+- Supported Jumbo for HDENI and LENI.
+
+
+## 1.8.2233 - 2024-12-23
+- Generated 2020-06-16 for `Alb`.
+
+
+## 1.8.2232 - 2024-12-19
+- Add BatchGetMediaInfos.
+- Modify UploadStreamByURL.
+
+
+## 1.8.2231 - 2024-12-18
+- Add Support Real time mock table.
+
+
+## 1.8.2230 - 2024-12-12
+- Supported Pageable of ListDataLakeDatabase API.
+
+
+## 1.8.2229 - 2024-12-11
+- Support fromData for UpdateRulesAttribute and Createrules
+
+
+## 1.8.2228 - 2024-12-6
+- Generated 2016-11-01 for `live`.
+
+
+## 1.8.2227 - 2024-12-6
+-Release GetJobDetail, ListJobInfo.
+-Modify GetTranscodeTask.
+
+
+## 1.8.2226 - 2024-12-2
+- Add LabelPriorityLevel in UpdateModelFeature API.
+
+
+## 1.8.2225 - 2024-11-28
+- SubmitTranscodeJobs Add SessionId.
+
+
+## 1.8.2224 - 2024-11-27
+- Generated 2017-11-10 for `Ens`.
+
+
+## 1.8.2223 - 2024-11-26
+- Add SmartqQueryAbility api.
+
+
+## 1.8.2222 - 2024-11-26
+- Update DescribeApiMetering API.
+
+
+## 1.8.2221 - 2024-11-22
+- Generated 2021-11-11 for `qianzhou`.
+
+
+## 1.8.2220 - 2024-11-19
+- Init.
+
+
+## 1.8.2219 - 2024-11-14
+- Generated 2016-11-01 for `live`.
+
+
+## 1.8.2218 - 2024-11-13
+- Supported AndroidMessageOppoCategory, AndroidMessageOppoNotifyLevel for Push and MassPush.
+
+
+## 1.8.2217 - 2024-11-5
+- Generated 2015-12-01 for `Dds`.
+
+
+## 1.8.2216 - 2024-11-4
+- Support Ipv4LocalAddresses and Ipv6LocalAddresses.
+
+
+## 1.8.2215 - 2024-10-31
+- DescribeInstanceTypes add CpuOptions.
+
+
+## 1.8.2214 - 2024-10-30
+- Update to support new apis.
+
+
+## 1.8.2213 - 2024-10-30
+- Update to support new apis.
+
+
+## 1.8.2212 - 2024-10-30
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2211 - 2024-10-30
+- Support describe and modify NVMe on instance.
+
+
+## 1.8.2210 - 2024-10-28
+- Support Fileset for BmCPFS.
+- Support Fileset Quota for BmCPFS.
+
+
+## 1.8.2209 - 2024-10-25
+- Generated 2017-11-10 for `Ens`.
+
+
+## 1.8.2208 - 2024-10-24
+- Publish sdk.
+
+
+## 1.8.2207 - 2024-10-23
+- Update Endpoint.
+
+
+## 1.8.2206 - 2024-10-23
+ListUsers，ListUserBasicInfos api新增支持status字段
+
+
+## 1.8.2205 - 2024-10-22
+- Add openapi StartEaiJupyter.
+- Add openapi StopEaiJupyter.
+
+
+## 1.8.2204 - 2024-10-18
+- Gwlb Open API released.
+
+
+## 1.8.2203 - 2024-10-17
+- 基于转移码的转出接口
+- SaveSingleTaskForTransferOutByAuthorizationCode
+- SaveBatchTaskForTransferOutByAuthorizationCode
+
+
+## 1.8.2202 - 2024-10-16
+- Gwlb Open API released.
+
+
+## 1.8.2201 - 2024-10-15
+- Add ResourcePoolOptions.Strategy for CreateAutoProvisioningGroup.
+
+
+## 1.8.2200 - 2024-10-11
+- GetPlayInfo Add EncryptMode.
+
+
+## 1.8.2199 - 2024-10-10
+- Add ManualRunMailTask, GetMailTaskStatus and GetWorksEmbedList apis.
+
+
+## 1.8.2198 - 2024-10-10
+- Support Android badge.
+- Support Harmony badge.
+- Support Harmony Extension Push Message.
+
+
+## 1.8.2197 - 2024-10-8
+- Generated 2022-12-01 for `ResourceCenter`.
+
+
+## 1.8.2196 - 2024-9-30
+- Generated 2018-08-28 for `Tag`.
+
+
+## 1.8.2195 - 2024-9-29
+- Generated 2021-12-21 for `wss`.
+
+
+## 1.8.2194 - 2024-9-29
+- Generated 2020-05-18 for `dataworks-public`.
+
+
+## 1.8.2193 - 2024-9-27
+- Support command audit for ecs.
+
+
+## 1.8.2192 - 2024-9-26
+- Update to support new apis.
+
+
+## 1.8.2191 - 2024-9-24
+- Generated 2024-02-22 for `OssSddp`.
+
+
+## 1.8.2190 - 2024-9-18
+- Add API Ram meta.
+
+
+## 1.8.2189 - 2024-9-14
+- Update EBS default encrypted APIs from private to public.
+- Support describe and modify source dest check property of ENI.
+
+
+## 1.8.2188 - 2024-9-10
+- Update EBS default encrypted APIs from private to public.
+
+
+## 1.8.2187 - 2024-9-2
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2186 - 2024-8-30
+- Generated 2016-01-20 for `Kms`.
+
+
+## 1.8.2185 - 2024-8-30
+- 增加国际一口价相关接口.
+- GetIntlFixPriceDomainListUrl.
+- CheckIntlFixPriceDomainStatus.
+- CreateIntlFixedPriceDomainOrder.
+- QueryIntlFixedPriceOrderList.
+
+
+## 1.8.2184 - 2024-8-28
+- Generated 2015-12-01 for `Dds`.
+
+
+## 1.8.2183 - 2024-8-23
+治理检测新增第一版OpenAPI
+
+
+## 1.8.2182 - 2024-8-23
+- Generated 2017-11-10 for `Ens`.
+
+
+## 1.8.2181 - 2024-8-22
+- Update to support new apis.
+
+
+## 1.8.2180 - 2024-8-21
+- Support record for ecs.
+
+
+## 1.8.2179 - 2024-8-20
+增加DescribeVodDomainMax95BpsData
+
+
+## 1.8.2178 - 2024-8-15
+- Support effective time for CreateOrUpdateSilencePolicy interface.
+- Fix spelling errors in the field SupportAuthTypes.
+
+
+## 1.8.2177 - 2024-8-13
+- Support RDS Custom.
+
+
+## 1.8.2176 - 2024-8-13
+- Update to support new apis.
+
+
+## 1.8.2175 - 2024-8-13
+- Support DryRun parameter OpenAPI.
+
+
+## 1.8.2174 - 2024-8-13
+-DescribeVodCertificateDetail, DescribeVodCertificateList增加返回参数
+
+
+## 1.8.2173 - 2024-8-12
+- Generated 2020-06-01 for `SWAS-OPEN`.
+
+
+## 1.8.2172 - 2024-8-7
+- Add QueryData, ModifyCopilotEmbedConfig, QueryCopilotEmbedConfig and QueryDataRange APIs.
+
+
+## 1.8.2171 - 2024-8-6
+- Update to support new apis.
+
+
+## 1.8.2170 - 2024-8-5
+- Offline remote write related APIs.
+- Mark the managedPrometheus related APIs as deprecated.
+
+
+## 1.8.2169 - 2024-8-5
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2168 - 2024-8-1
+- add openapi for Personalized Text to Image ablity init version.
+
+
+## 1.8.2167 - 2024-8-1
+- Generated 2015-12-01 for `Dds`.
+
+
+## 1.8.2166 - 2024-8-1
+- Update to support new apis.
+
+
+## 1.8.2165 - 2024-7-29
+- Update DescribeApiMetering API.
+
+
+## 1.8.2164 - 2024-7-26
+- Supported C#.
+
+
+## 1.8.2163 - 2024-7-24
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2162 - 2024-7-23
+- Generated 2014-08-15 for `Rds`.
+
+
+## 1.8.2161 - 2024-7-23
+- Update water-mark params
+
+
+## 1.8.2160 - 2024-7-22
+- Support kibana Pvl private link operation.
+
+
+## 1.8.2159 - 2024-7-19
+- Account management add SourceBiz parameters.
+
+
+## 1.8.2158 - 2024-7-19
+- Update SegmentCloth.
+
+
+## 1.8.2157 - 2024-7-18
+初始发布
+
+
+## 1.8.2156 - 2024-7-16
+- Generated 2020-06-01 for `SWAS-OPEN`.
+
+
+## 1.8.2155 - 2024-7-10
+- Added param for ActivateLicenseResponse .
+
+
+## 1.8.2154 - 2024-7-5
+- Update to support new apis.
+
+
+## 1.8.2153 - 2024-7-4
+- Publish Api：GetNisNetworkRanking
+- Publish Api：GetNisNetworkMetrics
+
+
+## 1.8.2152 - 2024-7-4
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2151 - 2024-7-3
+- Supported APIs DescribeSDG,PreloadRegionSDG,UnloadRegionSDG,DeployInstanceSDG,RemoveInstanceSDG.
+
+
+## 1.8.2150 - 2024-7-3
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2149 - 2024-7-2
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2148 - 2024-6-30
+- Add UsageMetric.
+
+
+## 1.8.2147 - 2024-6-28
+- Add QueryAuditLog, QueryApprovalInfo, DataSourceBlood, DataSetBlood and QueryDataServiceList APIs.
+- QueryUserInfoByAccount API updates error code.
+
+
+## 1.8.2146 - 2024-6-26
+- Supported AssumeRoleProxyChain for CreateHighDensityElasticNetworkInterface.
+
+
+## 1.8.2145 - 2024-6-25
+- Create AppGroup Support Set AppVersion.
+- Update AppGroup Support Set AppVersion.
+- List AppGroup Support return AppVersion.
+
+
+## 1.8.2144 - 2024-6-20
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2143 - 2024-6-18
+- Add status operation api.
+
+
+## 1.8.2142 - 2024-6-18
+- Update to support new apis.
+
+
+## 1.8.2141 - 2024-6-18
+- Supported modification of securityGroupId for UpdateElasticNetworkInterface API.
+
+
+## 1.8.2140 - 2024-6-18
+- Generated 2020-02-02 for `polardbx`.
+
+
+## 1.8.2139 - 2024-6-17
+- Generated 2020-06-01 for `SWAS-OPEN`.
+
+
+## 1.8.2138 - 2024-6-17
+- CreateDBInstance add DNStorageSpace
+
+
+## 1.8.2137 - 2024-6-14
+- Update to support new apis.
+
+
+## 1.8.2136 - 2024-6-14
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2135 - 2024-6-11
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2134 - 2024-6-6
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2133 - 2024-6-6
+- ListOrderConsumeStatisticRecords  add applicationExternalId serviceCode.
+
+
+## 1.8.2132 - 2024-6-5
+- Support dms dg.
+
+
+## 1.8.2131 - 2024-6-4
+- Update to support new apis.
+
+
+## 1.8.2130 - 2024-6-3
+- Supported gateway for hdeni api.
+
+
+## 1.8.2129 - 2024-5-30
+- Generated 2014-05-15 for `Slb`.
+
+
+## 1.8.2128 - 2024-5-30
+- Update QueryFaceVideoTemplate.
+
+
+## 1.8.2127 - 2024-5-30
+- Generated 2021-05-21 for `ComputeNestSupplier`.
+
+
+## 1.8.2126 - 2024-5-29
+- Support body
+
+
+## 1.8.2125 - 2024-5-27
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2124 - 2024-5-27
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2123 - 2024-5-24
+- Generated 2015-12-01 for `Dds`.
+
+
+## 1.8.2122 - 2024-5-24
+- Update to support new apis.
+
+
+## 1.8.2121 - 2024-5-23
+- Add SnapshotLinkId for DescribeSnapshots.
+
+
+## 1.8.2120 - 2024-5-23
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2119 - 2024-5-22
+- Generated 2020-06-01 for `SWAS-OPEN`.
+
+
+## 1.8.2118 - 2024-5-22
+- Support Spot Instance.
+
+
+## 1.8.2117 - 2024-5-22
+- Add CreateTicket4Copilot API.
+- QueryDatasetList and QueryDatasetInfo APIs add response parameters.
+
+
+## 1.8.2116 - 2024-5-22
+- DescribeDBInstances, add cpuType.
+
+
+## 1.8.2115 - 2024-5-14
+- Support ExecutorId for CreateJob and ListJobExecutors.
+
+
+## 1.8.2114 - 2024-5-14
+- Upgrade SDK.
+
+
+## 1.8.2113 - 2024-5-11
+- Update to support new apis.
+
+
+## 1.8.2112 - 2024-5-8
+- Support key policy and secret policy OpenAPI.
+
+
+## 1.8.2111 - 2024-5-8
+-Fixed DescribeVodMediaPlayData接口返回数据类型错误
+
+
+## 1.8.2110 - 2024-5-6
+- Update HDENI and LENI API.
+
+
+## 1.8.2109 - 2024-4-30
+- Generated 2014-08-15 for `Rds`.
+
+
+## 1.8.2108 - 2024-4-30
+- Generated 2018-01-15 for `dcdn`.
+
+
+## 1.8.2107 - 2024-4-29
+- Update to support new apis.
+
+
+## 1.8.2106 - 2024-4-26
+- Add SupportedBootModes for DescribeInstanceTypes.
+
+
+## 1.8.2105 - 2024-4-25
+- Generated 2017-03-21 for `vod`.
+
+
+## 1.8.2104 - 2024-4-25
+- E-HPC Instant Computing Service Release, supporting mirroring and job management.
+
+
+## 1.8.2103 - 2024-4-23
+- Generated 2021-06-01 for `ComputeNest`.
+
+
+## 1.8.2102 - 2024-4-22
+- Update DetectFace.
+
+
+## 1.8.2101 - 2024-4-22
+- Generated 2019-05-06 for `sae`.
+
+
+## 1.8.2100 - 2024-4-16
+- Support Container for CreateJob.
+
+
+## 1.8.2099 - 2024-4-15
+- Generated 2023-01-20 for `csas`.
+
+
+## 1.8.2098 - 2024-4-11
+- Generated 2020-06-06 for `cams`.
+
+
+## 1.8.2097 - 2024-4-3
+- Generated 2024-03-25 for `aps`.
+
+
+## 1.8.2096 - 2024-4-3
+- Supported use group by freedom
+
+
+## 1.8.2095 - 2024-4-3
+- Generated 2019-03-07 for `Cloudauth`.
+
+
+## 1.8.2094 - 2024-4-1
+- Generated 2013-02-21 for `Slb`.
+
+
+## 1.8.2093 - 2024-3-29
+- ListOrderConsumeStatisticRecords  add applicationExternalId serviceCode.
+
+
+## 1.8.2092 - 2024-3-28
+- Add min_access_level and organization_alis fields.
+- Add CreateCommitWithMultipleFiles api.
+- Add CreateComment api.
+
+
+## 1.8.2091 - 2024-3-26
+- DeleteFlow、DeleteSchedule Parameters move to body.
+
+
+## 1.8.2090 - 2024-3-26
+- Supported ECR Attachment.
+
+
+## 1.8.2089 - 2024-3-25
+- update api
+
+
+## 1.8.2088 - 2024-3-25
+- Generated 2019-09-01 for `OceanBasePro`.
+
+
+## 1.8.2087 - 2024-3-25
+- Fix API
+
+
+## 1.8.2086 - 2024-3-25
+- Generated 2019-06-01 for `oos`.
+
+
+## 1.8.2085 - 2024-3-19
+- Add QueryWorkspaceRoleConfig, ListWorkspaceRoleUsers, ListWorkspaceRoles, QueryOrganizationRoleConfig, ListOrganizationRoleUsers and ListOrganizationRoles APIs.
+
+
+## 1.8.2084 - 2024-3-14
+- Fixed bugs for PauseEventStreaming and DeleteEventStreaming
+
+
+## 1.8.2083 - 2024-3-13
+- Generated 2020-06-01 for `SWAS-OPEN`.
+
+
+## 1.8.2082 - 2024-3-13
+- Update QueryFaceImageTemplate.
+
+
+## 1.8.2081 - 2024-3-13
+- Update QueryFaceVideoTemplate.
+
+
+## 1.8.2080 - 2024-3-13
+- Update to support new apis.
+
+
+## 1.8.2079 - 2024-3-8
+- Support CreateInstance API.
+- Support UpdateInstance API.
+
+
+## 1.8.2078 - 2024-3-8
+- Generated 2015-12-01 for `Dds`.
+
+
+## 1.8.2077 - 2024-3-6
+- Update to support new apis.
+
+
+## 1.8.2076 - 2024-3-5
+- Support UserData parameter for ApplyNodes interface.
+
+
+## 1.8.2075 - 2024-3-1
+- Update to support new apis.
+
+
+## 1.8.2074 - 2024-2-29
+- Generated 2019-01-03 for `Sddp`.
+
+
+## 1.8.2073 - 2024-2-28
+- Fixed bugs for ListUserDefinedEventSources
+
+
 ## 1.8.2072 - 2024-2-27
 - AllotDatasetAccelerationTask API add error code.
 - QueryUserInfoByAccount, QueryUserInfoByUserId, AddUser, UpdateUser, and QueryUserList APIs add query or response parameters.

@@ -6,34 +6,54 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
 
 /**
  * @method AttachApplication2Connector attachApplication2Connector(array $options = [])
+ * @method CreateClientUser createClientUser(array $options = [])
  * @method CreateDynamicRoute createDynamicRoute(array $options = [])
+ * @method CreateIdpDepartment createIdpDepartment(array $options = [])
  * @method CreatePrivateAccessApplication createPrivateAccessApplication(array $options = [])
  * @method CreatePrivateAccessPolicy createPrivateAccessPolicy(array $options = [])
  * @method CreatePrivateAccessTag createPrivateAccessTag(array $options = [])
  * @method CreateRegistrationPolicy createRegistrationPolicy(array $options = [])
  * @method CreateUserGroup createUserGroup(array $options = [])
+ * @method CreateWmBaseImage createWmBaseImage(array $options = [])
+ * @method CreateWmEmbedTask createWmEmbedTask(array $options = [])
+ * @method CreateWmExtractTask createWmExtractTask(array $options = [])
+ * @method CreateWmInfoMapping createWmInfoMapping(array $options = [])
+ * @method DeleteClientUser deleteClientUser(array $options = [])
  * @method DeleteDynamicRoute deleteDynamicRoute(array $options = [])
+ * @method DeleteIdpDepartment deleteIdpDepartment(array $options = [])
  * @method DeletePrivateAccessApplication deletePrivateAccessApplication(array $options = [])
  * @method DeletePrivateAccessPolicy deletePrivateAccessPolicy(array $options = [])
  * @method DeletePrivateAccessTag deletePrivateAccessTag(array $options = [])
  * @method DeleteRegistrationPolicies deleteRegistrationPolicies(array $options = [])
+ * @method DeleteUserDevices deleteUserDevices(array $options = [])
  * @method DeleteUserGroup deleteUserGroup(array $options = [])
  * @method DetachApplication2Connector detachApplication2Connector(array $options = [])
+ * @method ExportUserDevices exportUserDevices(array $options = [])
+ * @method GetActiveIdpConfig getActiveIdpConfig(array $options = [])
+ * @method GetClientUser getClientUser(array $options = [])
  * @method GetDynamicRoute getDynamicRoute(array $options = [])
+ * @method GetIdpConfig getIdpConfig(array $options = [])
  * @method GetPrivateAccessApplication getPrivateAccessApplication(array $options = [])
  * @method GetPrivateAccessPolicy getPrivateAccessPolicy(array $options = [])
  * @method GetRegistrationPolicy getRegistrationPolicy(array $options = [])
  * @method GetUserDevice getUserDevice(array $options = [])
  * @method GetUserGroup getUserGroup(array $options = [])
+ * @method GetWmEmbedTask getWmEmbedTask(array $options = [])
+ * @method GetWmExtractTask getWmExtractTask(array $options = [])
  * @method ListApplicationsForPrivateAccessPolicy listApplicationsForPrivateAccessPolicy(array $options = [])
  * @method ListApplicationsForPrivateAccessTag listApplicationsForPrivateAccessTag(array $options = [])
+ * @method ListClientUsers listClientUsers(array $options = [])
  * @method ListConnectors listConnectors(array $options = [])
  * @method ListDynamicRouteRegions listDynamicRouteRegions(array $options = [])
  * @method ListDynamicRoutes listDynamicRoutes(array $options = [])
  * @method ListExcessiveDeviceRegistrationApplications listExcessiveDeviceRegistrationApplications(array $options = [])
+ * @method ListIdpConfigs listIdpConfigs(array $options = [])
+ * @method ListIdpDepartments listIdpDepartments(array $options = [])
+ * @method ListNacUserCert listNacUserCert(array $options = [])
  * @method ListPolicesForPrivateAccessApplication listPolicesForPrivateAccessApplication(array $options = [])
  * @method ListPolicesForPrivateAccessTag listPolicesForPrivateAccessTag(array $options = [])
  * @method ListPolicesForUserGroup listPolicesForUserGroup(array $options = [])
+ * @method ListPopTrafficStatistics listPopTrafficStatistics(array $options = [])
  * @method ListPrivateAccessApplications listPrivateAccessApplications(array $options = [])
  * @method ListPrivateAccessApplicationsForDynamicRoute listPrivateAccessApplicationsForDynamicRoute(array $options = [])
  * @method ListPrivateAccessPolices listPrivateAccessPolices(array $options = [])
@@ -48,14 +68,23 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method ListUserGroups listUserGroups(array $options = [])
  * @method ListUserGroupsForPrivateAccessPolicy listUserGroupsForPrivateAccessPolicy(array $options = [])
  * @method ListUserGroupsForRegistrationPolicy listUserGroupsForRegistrationPolicy(array $options = [])
+ * @method ListUsers listUsers(array $options = [])
+ * @method LookupWmInfoMapping lookupWmInfoMapping(array $options = [])
+ * @method RevokeUserSession revokeUserSession(array $options = [])
+ * @method UpdateClientUser updateClientUser(array $options = [])
+ * @method UpdateClientUserPassword updateClientUserPassword(array $options = [])
+ * @method UpdateClientUserStatus updateClientUserStatus(array $options = [])
  * @method UpdateDynamicRoute updateDynamicRoute(array $options = [])
  * @method UpdateExcessiveDeviceRegistrationApplicationsStatus updateExcessiveDeviceRegistrationApplicationsStatus(array $options = [])
+ * @method UpdateIdpDepartment updateIdpDepartment(array $options = [])
+ * @method UpdateNacUserCertStatus updateNacUserCertStatus(array $options = [])
  * @method UpdatePrivateAccessApplication updatePrivateAccessApplication(array $options = [])
  * @method UpdatePrivateAccessPolicy updatePrivateAccessPolicy(array $options = [])
  * @method UpdateRegistrationPolicy updateRegistrationPolicy(array $options = [])
  * @method UpdateUserDevicesSharingStatus updateUserDevicesSharingStatus(array $options = [])
  * @method UpdateUserDevicesStatus updateUserDevicesStatus(array $options = [])
  * @method UpdateUserGroup updateUserGroup(array $options = [])
+ * @method UpdateUsersStatus updateUsersStatus(array $options = [])
  */
 class CsasApiResolver extends ApiResolver
 {
@@ -68,6 +97,9 @@ class Rpc extends \AlibabaCloud\Client\Resolver\Rpc
 
     /** @var string */
     public $version = '2023-01-20';
+
+    /** @var string */
+    public $method = 'POST';
 }
 
 /**
@@ -78,9 +110,6 @@ class Rpc extends \AlibabaCloud\Client\Resolver\Rpc
  */
 class AttachApplication2Connector extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -110,6 +139,26 @@ class AttachApplication2Connector extends Rpc
 }
 
 /**
+ * @method string getMobileNumber()
+ * @method $this withMobileNumber($value)
+ * @method string getDepartmentId()
+ * @method $this withDepartmentId($value)
+ * @method string getDescription()
+ * @method $this withDescription($value)
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getPassword()
+ * @method $this withPassword($value)
+ * @method string getEmail()
+ * @method $this withEmail($value)
+ * @method string getUsername()
+ * @method $this withUsername($value)
+ */
+class CreateClientUser extends Rpc
+{
+}
+
+/**
  * @method string getDescription()
  * @method string getSourceIp()
  * @method $this withSourceIp($value)
@@ -125,9 +174,6 @@ class AttachApplication2Connector extends Rpc
  */
 class CreateDynamicRoute extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -261,21 +307,32 @@ class CreateDynamicRoute extends Rpc
 }
 
 /**
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getDepartmentName()
+ * @method $this withDepartmentName($value)
+ */
+class CreateIdpDepartment extends Rpc
+{
+}
+
+/**
  * @method string getAddresses()
  * @method string getDescription()
  * @method string getProtocol()
  * @method string getSourceIp()
  * @method $this withSourceIp($value)
+ * @method string getL7ProxyDomainCustom()
+ * @method string getL7ProxyDomainPrivate()
+ * @method string getBrowserAccessStatus()
  * @method string getTagIds()
+ * @method string getL7ProxyDomainAutomaticPrefix()
  * @method string getPortRanges()
  * @method string getName()
  * @method string getStatus()
  */
 class CreatePrivateAccessApplication extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -321,10 +378,62 @@ class CreatePrivateAccessApplication extends Rpc
      *
      * @return $this
      */
+    public function withL7ProxyDomainCustom($value)
+    {
+        $this->data['L7ProxyDomainCustom'] = $value;
+        $this->options['form_params']['L7ProxyDomainCustom'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withL7ProxyDomainPrivate($value)
+    {
+        $this->data['L7ProxyDomainPrivate'] = $value;
+        $this->options['form_params']['L7ProxyDomainPrivate'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withBrowserAccessStatus($value)
+    {
+        $this->data['BrowserAccessStatus'] = $value;
+        $this->options['form_params']['BrowserAccessStatus'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withTagIds($value)
     {
         $this->data['TagIds'] = $value;
         $this->options['form_params']['TagIds'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withL7ProxyDomainAutomaticPrefix($value)
+    {
+        $this->data['L7ProxyDomainAutomaticPrefix'] = $value;
+        $this->options['form_params']['L7ProxyDomainAutomaticPrefix'] = $value;
 
         return $this;
     }
@@ -375,9 +484,11 @@ class CreatePrivateAccessApplication extends Rpc
  * @method $this withSourceIp($value)
  * @method string getCustomUserAttributes()
  * @method string getTagIds()
+ * @method string getDeviceAttributeId()
  * @method string getUserGroupIds()
  * @method string getPolicyAction()
  * @method string getPriority()
+ * @method string getDeviceAttributeAction()
  * @method string getApplicationIds()
  * @method string getUserGroupMode()
  * @method string getName()
@@ -386,9 +497,6 @@ class CreatePrivateAccessApplication extends Rpc
  */
 class CreatePrivateAccessPolicy extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -434,6 +542,19 @@ class CreatePrivateAccessPolicy extends Rpc
      *
      * @return $this
      */
+    public function withDeviceAttributeId($value)
+    {
+        $this->data['DeviceAttributeId'] = $value;
+        $this->options['form_params']['DeviceAttributeId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withUserGroupIds($value)
     {
         $this->data['UserGroupIds'] = $value;
@@ -464,6 +585,19 @@ class CreatePrivateAccessPolicy extends Rpc
     {
         $this->data['Priority'] = $value;
         $this->options['form_params']['Priority'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceAttributeAction($value)
+    {
+        $this->data['DeviceAttributeAction'] = $value;
+        $this->options['form_params']['DeviceAttributeAction'] = $value;
 
         return $this;
     }
@@ -543,9 +677,6 @@ class CreatePrivateAccessPolicy extends Rpc
 class CreatePrivateAccessTag extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -590,9 +721,6 @@ class CreatePrivateAccessTag extends Rpc
  */
 class CreateRegistrationPolicy extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -748,9 +876,6 @@ class CreateRegistrationPolicy extends Rpc
 class CreateUserGroup extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -792,6 +917,528 @@ class CreateUserGroup extends Rpc
 }
 
 /**
+ * @method string getScale()
+ * @method string getApiType()
+ * @method string getWmInfoUint()
+ * @method string getWmInfoSize()
+ * @method string getWmInfoBytesB64()
+ * @method string getWmType()
+ * @method string getWidth()
+ * @method string getOpacity()
+ * @method string getHeight()
+ */
+class CreateWmBaseImage extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withScale($value)
+    {
+        $this->data['Scale'] = $value;
+        $this->options['form_params']['Scale'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withApiType($value)
+    {
+        $this->data['ApiType'] = $value;
+        $this->options['form_params']['ApiType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoUint($value)
+    {
+        $this->data['WmInfoUint'] = $value;
+        $this->options['form_params']['WmInfoUint'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoSize($value)
+    {
+        $this->data['WmInfoSize'] = $value;
+        $this->options['form_params']['WmInfoSize'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoBytesB64($value)
+    {
+        $this->data['WmInfoBytesB64'] = $value;
+        $this->options['form_params']['WmInfoBytesB64'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmType($value)
+    {
+        $this->data['WmType'] = $value;
+        $this->options['form_params']['WmType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWidth($value)
+    {
+        $this->data['Width'] = $value;
+        $this->options['form_params']['Width'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withOpacity($value)
+    {
+        $this->data['Opacity'] = $value;
+        $this->options['form_params']['Opacity'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withHeight($value)
+    {
+        $this->data['Height'] = $value;
+        $this->options['form_params']['Height'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getVideoIsLong()
+ * @method string getApiType()
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getImageEmbedLevel()
+ * @method string getWmType()
+ * @method string getDocumentControl()
+ * @method string getImageEmbedJpegQuality()
+ * @method string getWatermarkInfoUint()
+ * @method string getWmInfoUint()
+ * @method string getCsvControl()
+ * @method $this withCsvControl($value)
+ * @method string getFilename()
+ * @method string getWmInfoSize()
+ * @method string getWmInfoBytesB64()
+ * @method string getFileUrl()
+ * @method string getVideoBitrate()
+ */
+class CreateWmEmbedTask extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVideoIsLong($value)
+    {
+        $this->data['VideoIsLong'] = $value;
+        $this->options['form_params']['VideoIsLong'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withApiType($value)
+    {
+        $this->data['ApiType'] = $value;
+        $this->options['form_params']['ApiType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withImageEmbedLevel($value)
+    {
+        $this->data['ImageEmbedLevel'] = $value;
+        $this->options['form_params']['ImageEmbedLevel'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmType($value)
+    {
+        $this->data['WmType'] = $value;
+        $this->options['form_params']['WmType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDocumentControl($value)
+    {
+        $this->data['DocumentControl'] = $value;
+        $this->options['form_params']['DocumentControl'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withImageEmbedJpegQuality($value)
+    {
+        $this->data['ImageEmbedJpegQuality'] = $value;
+        $this->options['form_params']['ImageEmbedJpegQuality'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWatermarkInfoUint($value)
+    {
+        $this->data['WatermarkInfoUint'] = $value;
+        $this->options['form_params']['WatermarkInfoUint'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoUint($value)
+    {
+        $this->data['WmInfoUint'] = $value;
+        $this->options['form_params']['WmInfoUint'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withFilename($value)
+    {
+        $this->data['Filename'] = $value;
+        $this->options['form_params']['Filename'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoSize($value)
+    {
+        $this->data['WmInfoSize'] = $value;
+        $this->options['form_params']['WmInfoSize'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoBytesB64($value)
+    {
+        $this->data['WmInfoBytesB64'] = $value;
+        $this->options['form_params']['WmInfoBytesB64'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withFileUrl($value)
+    {
+        $this->data['FileUrl'] = $value;
+        $this->options['form_params']['FileUrl'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVideoBitrate($value)
+    {
+        $this->data['VideoBitrate'] = $value;
+        $this->options['form_params']['VideoBitrate'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getVideoIsLong()
+ * @method string getDocumentIsCapture()
+ * @method string getVideoSpeed()
+ * @method string getApiType()
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getWmType()
+ * @method string getImageDetectLevel()
+ * @method string getCsvControl()
+ * @method $this withCsvControl($value)
+ * @method string getFilename()
+ * @method string getWmInfoSize()
+ * @method string getFileUrl()
+ */
+class CreateWmExtractTask extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVideoIsLong($value)
+    {
+        $this->data['VideoIsLong'] = $value;
+        $this->options['form_params']['VideoIsLong'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDocumentIsCapture($value)
+    {
+        $this->data['DocumentIsCapture'] = $value;
+        $this->options['form_params']['DocumentIsCapture'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVideoSpeed($value)
+    {
+        $this->data['VideoSpeed'] = $value;
+        $this->options['form_params']['VideoSpeed'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withApiType($value)
+    {
+        $this->data['ApiType'] = $value;
+        $this->options['form_params']['ApiType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmType($value)
+    {
+        $this->data['WmType'] = $value;
+        $this->options['form_params']['WmType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withImageDetectLevel($value)
+    {
+        $this->data['ImageDetectLevel'] = $value;
+        $this->options['form_params']['ImageDetectLevel'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withFilename($value)
+    {
+        $this->data['Filename'] = $value;
+        $this->options['form_params']['Filename'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoSize($value)
+    {
+        $this->data['WmInfoSize'] = $value;
+        $this->options['form_params']['WmInfoSize'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withFileUrl($value)
+    {
+        $this->data['FileUrl'] = $value;
+        $this->options['form_params']['FileUrl'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getWmInfoSize()
+ * @method string getWmInfoBytesB64()
+ * @method string getWmType()
+ */
+class CreateWmInfoMapping extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoSize($value)
+    {
+        $this->data['WmInfoSize'] = $value;
+        $this->options['form_params']['WmInfoSize'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmInfoBytesB64($value)
+    {
+        $this->data['WmInfoBytesB64'] = $value;
+        $this->options['form_params']['WmInfoBytesB64'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withWmType($value)
+    {
+        $this->data['WmType'] = $value;
+        $this->options['form_params']['WmType'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getId()
+ * @method $this withId($value)
+ */
+class DeleteClientUser extends Rpc
+{
+}
+
+/**
  * @method string getDynamicRouteId()
  * @method $this withDynamicRouteId($value)
  * @method string getSourceIp()
@@ -799,9 +1446,16 @@ class CreateUserGroup extends Rpc
  */
 class DeleteDynamicRoute extends Rpc
 {
+}
 
-    /** @var string */
-    public $method = 'POST';
+/**
+ * @method string getDepartmentId()
+ * @method $this withDepartmentId($value)
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ */
+class DeleteIdpDepartment extends Rpc
+{
 }
 
 /**
@@ -811,9 +1465,6 @@ class DeleteDynamicRoute extends Rpc
  */
 class DeletePrivateAccessApplication extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -837,9 +1488,6 @@ class DeletePrivateAccessApplication extends Rpc
 class DeletePrivateAccessPolicy extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -861,9 +1509,6 @@ class DeletePrivateAccessPolicy extends Rpc
  */
 class DeletePrivateAccessTag extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -887,9 +1532,6 @@ class DeletePrivateAccessTag extends Rpc
 class DeleteRegistrationPolicies extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -905,15 +1547,34 @@ class DeleteRegistrationPolicies extends Rpc
 }
 
 /**
+ * @method string getDeviceTags()
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ */
+class DeleteUserDevices extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceTags($value)
+    {
+        $this->data['DeviceTags'] = $value;
+        $this->options['form_params']['DeviceTags'] = $value;
+
+        return $this;
+    }
+}
+
+/**
  * @method string getUserGroupId()
  * @method string getSourceIp()
  * @method $this withSourceIp($value)
  */
 class DeleteUserGroup extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -937,9 +1598,6 @@ class DeleteUserGroup extends Rpc
  */
 class DetachApplication2Connector extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -969,6 +1627,244 @@ class DetachApplication2Connector extends Rpc
 }
 
 /**
+ * @method string getMac()
+ * @method string getDeviceTypes()
+ * @method string getHostname()
+ * @method string getAppStatuses()
+ * @method string getDlpStatuses()
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getSaseUserId()
+ * @method string getNacStatuses()
+ * @method string getDepartment()
+ * @method string getIaStatuses()
+ * @method string getDeviceBelong()
+ * @method string getSharingStatus()
+ * @method string getDeviceTags()
+ * @method string getDeviceStatuses()
+ * @method string getPaStatuses()
+ * @method string getUsername()
+ */
+class ExportUserDevices extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withMac($value)
+    {
+        $this->data['Mac'] = $value;
+        $this->options['form_params']['Mac'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceTypes($value)
+    {
+        $this->data['DeviceTypes'] = $value;
+        $this->options['form_params']['DeviceTypes'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withHostname($value)
+    {
+        $this->data['Hostname'] = $value;
+        $this->options['form_params']['Hostname'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withAppStatuses($value)
+    {
+        $this->data['AppStatuses'] = $value;
+        $this->options['form_params']['AppStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDlpStatuses($value)
+    {
+        $this->data['DlpStatuses'] = $value;
+        $this->options['form_params']['DlpStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withSaseUserId($value)
+    {
+        $this->data['SaseUserId'] = $value;
+        $this->options['form_params']['SaseUserId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withNacStatuses($value)
+    {
+        $this->data['NacStatuses'] = $value;
+        $this->options['form_params']['NacStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDepartment($value)
+    {
+        $this->data['Department'] = $value;
+        $this->options['form_params']['Department'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIaStatuses($value)
+    {
+        $this->data['IaStatuses'] = $value;
+        $this->options['form_params']['IaStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceBelong($value)
+    {
+        $this->data['DeviceBelong'] = $value;
+        $this->options['form_params']['DeviceBelong'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withSharingStatus($value)
+    {
+        $this->data['SharingStatus'] = $value;
+        $this->options['form_params']['SharingStatus'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceTags($value)
+    {
+        $this->data['DeviceTags'] = $value;
+        $this->options['form_params']['DeviceTags'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceStatuses($value)
+    {
+        $this->data['DeviceStatuses'] = $value;
+        $this->options['form_params']['DeviceStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPaStatuses($value)
+    {
+        $this->data['PaStatuses'] = $value;
+        $this->options['form_params']['PaStatuses'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withUsername($value)
+    {
+        $this->data['Username'] = $value;
+        $this->options['form_params']['Username'] = $value;
+
+        return $this;
+    }
+}
+
+class GetActiveIdpConfig extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getUsername()
+ * @method $this withUsername($value)
+ */
+class GetClientUser extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
  * @method string getDynamicRouteId()
  * @method $this withDynamicRouteId($value)
  * @method string getSourceIp()
@@ -976,6 +1872,20 @@ class DetachApplication2Connector extends Rpc
  */
 class GetDynamicRoute extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getId()
+ * @method $this withId($value)
+ */
+class GetIdpConfig extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -986,6 +1896,9 @@ class GetDynamicRoute extends Rpc
  */
 class GetPrivateAccessApplication extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -996,6 +1909,9 @@ class GetPrivateAccessApplication extends Rpc
  */
 class GetPrivateAccessPolicy extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1006,6 +1922,9 @@ class GetPrivateAccessPolicy extends Rpc
  */
 class GetRegistrationPolicy extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1016,6 +1935,9 @@ class GetRegistrationPolicy extends Rpc
  */
 class GetUserDevice extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1026,6 +1948,39 @@ class GetUserDevice extends Rpc
  */
 class GetUserGroup extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getApiType()
+ * @method $this withApiType($value)
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getTaskId()
+ * @method $this withTaskId($value)
+ */
+class GetWmEmbedTask extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getApiType()
+ * @method $this withApiType($value)
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getTaskId()
+ * @method $this withTaskId($value)
+ */
+class GetWmExtractTask extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1036,6 +1991,9 @@ class GetUserGroup extends Rpc
  */
 class ListApplicationsForPrivateAccessPolicy extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1046,6 +2004,34 @@ class ListApplicationsForPrivateAccessPolicy extends Rpc
  */
 class ListApplicationsForPrivateAccessTag extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getMobileNumber()
+ * @method $this withMobileNumber($value)
+ * @method string getDepartmentId()
+ * @method $this withDepartmentId($value)
+ * @method string getCurrentPage()
+ * @method $this withCurrentPage($value)
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ * @method string getEmail()
+ * @method $this withEmail($value)
+ * @method string getUsername()
+ * @method $this withUsername($value)
+ * @method string getStatus()
+ * @method $this withStatus($value)
+ */
+class ListClientUsers extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1066,6 +2052,9 @@ class ListApplicationsForPrivateAccessTag extends Rpc
  */
 class ListConnectors extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1074,6 +2063,9 @@ class ListConnectors extends Rpc
  */
 class ListDynamicRouteRegions extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1100,6 +2092,9 @@ class ListDynamicRouteRegions extends Rpc
  */
 class ListDynamicRoutes extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1128,6 +2123,64 @@ class ListDynamicRoutes extends Rpc
  */
 class ListExcessiveDeviceRegistrationApplications extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getInclude()
+ * @method $this withInclude($value)
+ * @method string getCurrentPage()
+ * @method $this withCurrentPage($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ */
+class ListIdpConfigs extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getCurrentPage()
+ * @method $this withCurrentPage($value)
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ */
+class ListIdpDepartments extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getCurrentPage()
+ * @method $this withCurrentPage($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDeviceType()
+ * @method $this withDeviceType($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ * @method string getDepartment()
+ * @method $this withDepartment($value)
+ * @method string getUsername()
+ * @method $this withUsername($value)
+ * @method string getStatus()
+ * @method $this withStatus($value)
+ */
+class ListNacUserCert extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
 }
 
 /**
@@ -1138,6 +2191,9 @@ class ListExcessiveDeviceRegistrationApplications extends Rpc
  */
 class ListPolicesForPrivateAccessApplication extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1148,6 +2204,9 @@ class ListPolicesForPrivateAccessApplication extends Rpc
  */
 class ListPolicesForPrivateAccessTag extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1158,6 +2217,27 @@ class ListPolicesForPrivateAccessTag extends Rpc
  */
 class ListPolicesForUserGroup extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getRegion()
+ * @method $this withRegion($value)
+ */
+class ListPopTrafficStatistics extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1177,6 +2257,8 @@ class ListPolicesForUserGroup extends Rpc
  * @method $this withCurrentPage($value)
  * @method string getApplicationIds()
  * @method $this withApplicationIds($value)
+ * @method string getAccessModes()
+ * @method $this withAccessModes($value)
  * @method string getName()
  * @method $this withName($value)
  * @method string getStatus()
@@ -1184,6 +2266,9 @@ class ListPolicesForUserGroup extends Rpc
  */
 class ListPrivateAccessApplications extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1194,11 +2279,16 @@ class ListPrivateAccessApplications extends Rpc
  */
 class ListPrivateAccessApplicationsForDynamicRoute extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
  * @method string getPolicyIds()
  * @method $this withPolicyIds($value)
+ * @method string getTagName()
+ * @method $this withTagName($value)
  * @method string getSourceIp()
  * @method $this withSourceIp($value)
  * @method string getPageSize()
@@ -1213,6 +2303,8 @@ class ListPrivateAccessApplicationsForDynamicRoute extends Rpc
  * @method $this withCurrentPage($value)
  * @method string getPolicyAction()
  * @method $this withPolicyAction($value)
+ * @method string getApplicationName()
+ * @method $this withApplicationName($value)
  * @method string getName()
  * @method $this withName($value)
  * @method string getStatus()
@@ -1220,6 +2312,9 @@ class ListPrivateAccessApplicationsForDynamicRoute extends Rpc
  */
 class ListPrivateAccessPolices extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1242,6 +2337,9 @@ class ListPrivateAccessPolices extends Rpc
  */
 class ListPrivateAccessTags extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1252,6 +2350,9 @@ class ListPrivateAccessTags extends Rpc
  */
 class ListPrivateAccessTagsForDynamicRoute extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1278,6 +2379,9 @@ class ListPrivateAccessTagsForDynamicRoute extends Rpc
  */
 class ListRegistrationPolicies extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1288,6 +2392,9 @@ class ListRegistrationPolicies extends Rpc
  */
 class ListRegistrationPoliciesForUserGroup extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1302,6 +2409,9 @@ class ListRegistrationPoliciesForUserGroup extends Rpc
  */
 class ListSoftwareForUserDevice extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1312,6 +2422,9 @@ class ListSoftwareForUserDevice extends Rpc
  */
 class ListTagsForPrivateAccessApplication extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1322,6 +2435,9 @@ class ListTagsForPrivateAccessApplication extends Rpc
  */
 class ListTagsForPrivateAccessPolicy extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1345,6 +2461,8 @@ class ListTagsForPrivateAccessPolicy extends Rpc
  * @method $this withNacStatuses($value)
  * @method string getDepartment()
  * @method $this withDepartment($value)
+ * @method string getInnerIp()
+ * @method $this withInnerIp($value)
  * @method string getIaStatuses()
  * @method $this withIaStatuses($value)
  * @method string getDeviceBelong()
@@ -1366,6 +2484,9 @@ class ListTagsForPrivateAccessPolicy extends Rpc
  */
 class ListUserDevices extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1386,6 +2507,9 @@ class ListUserDevices extends Rpc
  */
 class ListUserGroups extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1396,6 +2520,9 @@ class ListUserGroups extends Rpc
  */
 class ListUserGroupsForPrivateAccessPolicy extends Rpc
 {
+
+    /** @var string */
+    public $method = 'GET';
 }
 
 /**
@@ -1405,6 +2532,100 @@ class ListUserGroupsForPrivateAccessPolicy extends Rpc
  * @method $this withSourceIp($value)
  */
 class ListUserGroupsForRegistrationPolicy extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getFuzzyUsername()
+ * @method $this withFuzzyUsername($value)
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ * @method string getDepartment()
+ * @method $this withDepartment($value)
+ * @method string getCurrentPage()
+ * @method $this withCurrentPage($value)
+ * @method string getPreciseUsername()
+ * @method $this withPreciseUsername($value)
+ * @method string getSaseUserIds()
+ * @method $this withSaseUserIds($value)
+ * @method string getStatus()
+ * @method $this withStatus($value)
+ */
+class ListUsers extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getWmInfoUint()
+ * @method $this withWmInfoUint($value)
+ * @method string getWmInfoSize()
+ * @method $this withWmInfoSize($value)
+ * @method string getWmType()
+ * @method $this withWmType($value)
+ */
+class LookupWmInfoMapping extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getIdpId()
+ * @method $this withIdpId($value)
+ * @method string getExternalIds()
+ * @method $this withExternalIds($value)
+ */
+class RevokeUserSession extends Rpc
+{
+}
+
+/**
+ * @method string getMobileNumber()
+ * @method $this withMobileNumber($value)
+ * @method string getDepartmentId()
+ * @method $this withDepartmentId($value)
+ * @method string getDescription()
+ * @method $this withDescription($value)
+ * @method string getId()
+ * @method $this withId($value)
+ * @method string getEmail()
+ * @method $this withEmail($value)
+ */
+class UpdateClientUser extends Rpc
+{
+}
+
+/**
+ * @method string getPassword()
+ * @method $this withPassword($value)
+ * @method string getId()
+ * @method $this withId($value)
+ * @method string getUsername()
+ * @method $this withUsername($value)
+ */
+class UpdateClientUserPassword extends Rpc
+{
+}
+
+/**
+ * @method string getId()
+ * @method $this withId($value)
+ * @method string getStatus()
+ * @method $this withStatus($value)
+ */
+class UpdateClientUserStatus extends Rpc
 {
 }
 
@@ -1426,9 +2647,6 @@ class ListUserGroupsForRegistrationPolicy extends Rpc
  */
 class UpdateDynamicRoute extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -1596,9 +2814,6 @@ class UpdateDynamicRoute extends Rpc
 class UpdateExcessiveDeviceRegistrationApplicationsStatus extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -1627,22 +2842,71 @@ class UpdateExcessiveDeviceRegistrationApplicationsStatus extends Rpc
 }
 
 /**
+ * @method string getDepartmentId()
+ * @method $this withDepartmentId($value)
+ * @method string getIdpConfigId()
+ * @method $this withIdpConfigId($value)
+ * @method string getDepartmentName()
+ * @method $this withDepartmentName($value)
+ */
+class UpdateIdpDepartment extends Rpc
+{
+}
+
+/**
+ * @method string getIdList()
+ * @method string getStatus()
+ */
+class UpdateNacUserCertStatus extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIdList($value)
+    {
+        $this->data['IdList'] = $value;
+        $this->options['form_params']['IdList'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withStatus($value)
+    {
+        $this->data['Status'] = $value;
+        $this->options['form_params']['Status'] = $value;
+
+        return $this;
+    }
+}
+
+/**
  * @method string getAddresses()
  * @method string getDescription()
  * @method string getProtocol()
  * @method string getSourceIp()
  * @method $this withSourceIp($value)
  * @method string getApplicationId()
+ * @method string getL7ProxyDomainCustom()
+ * @method string getL7ProxyDomainPrivate()
  * @method string getTagIds()
+ * @method string getL7ProxyDomainAutomaticPrefix()
  * @method string getPortRanges()
  * @method string getModifyType()
  * @method string getStatus()
  */
 class UpdatePrivateAccessApplication extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -1701,10 +2965,49 @@ class UpdatePrivateAccessApplication extends Rpc
      *
      * @return $this
      */
+    public function withL7ProxyDomainCustom($value)
+    {
+        $this->data['L7ProxyDomainCustom'] = $value;
+        $this->options['form_params']['L7ProxyDomainCustom'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withL7ProxyDomainPrivate($value)
+    {
+        $this->data['L7ProxyDomainPrivate'] = $value;
+        $this->options['form_params']['L7ProxyDomainPrivate'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withTagIds($value)
     {
         $this->data['TagIds'] = $value;
         $this->options['form_params']['TagIds'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withL7ProxyDomainAutomaticPrefix($value)
+    {
+        $this->data['L7ProxyDomainAutomaticPrefix'] = $value;
+        $this->options['form_params']['L7ProxyDomainAutomaticPrefix'] = $value;
 
         return $this;
     }
@@ -1756,9 +3059,11 @@ class UpdatePrivateAccessApplication extends Rpc
  * @method string getPolicyId()
  * @method string getCustomUserAttributes()
  * @method string getTagIds()
+ * @method string getDeviceAttributeId()
  * @method string getUserGroupIds()
  * @method string getPolicyAction()
  * @method string getPriority()
+ * @method string getDeviceAttributeAction()
  * @method string getApplicationIds()
  * @method string getUserGroupMode()
  * @method string getModifyType()
@@ -1767,9 +3072,6 @@ class UpdatePrivateAccessApplication extends Rpc
  */
 class UpdatePrivateAccessPolicy extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -1828,6 +3130,19 @@ class UpdatePrivateAccessPolicy extends Rpc
      *
      * @return $this
      */
+    public function withDeviceAttributeId($value)
+    {
+        $this->data['DeviceAttributeId'] = $value;
+        $this->options['form_params']['DeviceAttributeId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withUserGroupIds($value)
     {
         $this->data['UserGroupIds'] = $value;
@@ -1858,6 +3173,19 @@ class UpdatePrivateAccessPolicy extends Rpc
     {
         $this->data['Priority'] = $value;
         $this->options['form_params']['Priority'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDeviceAttributeAction($value)
+    {
+        $this->data['DeviceAttributeAction'] = $value;
+        $this->options['form_params']['DeviceAttributeAction'] = $value;
 
         return $this;
     }
@@ -1946,9 +3274,6 @@ class UpdatePrivateAccessPolicy extends Rpc
  */
 class UpdateRegistrationPolicy extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -2116,9 +3441,6 @@ class UpdateRegistrationPolicy extends Rpc
 class UpdateUserDevicesSharingStatus extends Rpc
 {
 
-    /** @var string */
-    public $method = 'POST';
-
     /**
      * @param string $value
      *
@@ -2154,9 +3476,6 @@ class UpdateUserDevicesSharingStatus extends Rpc
  */
 class UpdateUserDevicesStatus extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -2195,9 +3514,6 @@ class UpdateUserDevicesStatus extends Rpc
  */
 class UpdateUserGroup extends Rpc
 {
-
-    /** @var string */
-    public $method = 'POST';
 
     /**
      * @param string $value
@@ -2250,4 +3566,16 @@ class UpdateUserGroup extends Rpc
 
         return $this;
     }
+}
+
+/**
+ * @method string getSaseUserIds()
+ * @method $this withSaseUserIds($value)
+ * @method string getSourceIp()
+ * @method $this withSourceIp($value)
+ * @method string getStatus()
+ * @method $this withStatus($value)
+ */
+class UpdateUsersStatus extends Rpc
+{
 }

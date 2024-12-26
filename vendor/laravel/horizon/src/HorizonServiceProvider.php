@@ -23,7 +23,6 @@ class HorizonServiceProvider extends ServiceProvider
         $this->registerEvents();
         $this->registerRoutes();
         $this->registerResources();
-        $this->defineAssetPublishing();
         $this->offerPublishing();
         $this->registerCommands();
     }
@@ -76,18 +75,6 @@ class HorizonServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the asset publishing configuration.
-     *
-     * @return void
-     */
-    public function defineAssetPublishing()
-    {
-        $this->publishes([
-            HORIZON_PATH.'/public' => public_path('vendor/horizon'),
-        ], ['horizon-assets', 'laravel-assets']);
-    }
-
-    /**
      * Setup the resource publishing groups for Horizon.
      *
      * @return void
@@ -128,6 +115,7 @@ class HorizonServiceProvider extends ServiceProvider
                 Console\PurgeCommand::class,
                 Console\StatusCommand::class,
                 Console\SupervisorCommand::class,
+                Console\SupervisorStatusCommand::class,
                 Console\SupervisorsCommand::class,
                 Console\TerminateCommand::class,
                 Console\TimeoutCommand::class,

@@ -5,6 +5,7 @@ namespace Spatie\Html\Elements;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\Html\BaseElement;
+use Spatie\Html\Elements\Attributes\Autocomplete;
 use Spatie\Html\Elements\Attributes\Autofocus;
 use Spatie\Html\Elements\Attributes\Disabled;
 use Spatie\Html\Elements\Attributes\Name;
@@ -15,6 +16,7 @@ use Spatie\Html\Selectable;
 class Select extends BaseElement
 {
     use Autofocus;
+    use Autocomplete;
     use Disabled;
     use Name;
     use Required;
@@ -124,7 +126,9 @@ class Select extends BaseElement
 
     protected function applyValueToOptions()
     {
-        $value = Collection::make($this->value);
+        $value = $this->value instanceof \Illuminate\Support\Collection
+            ? $this->value
+            : Collection::make($this->value);
 
         if (! $this->hasAttribute('multiple')) {
             $value = $value->take(1);
