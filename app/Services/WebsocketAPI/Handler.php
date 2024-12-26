@@ -13,7 +13,7 @@ class Handler
     {
         match ($eventName) {
             'sms' => $this->handleSmsEvent(...$data),
-            'deliveryStatus' => $this->handleDeliveryStatusEvent(...$data),
+        //    'deliveryStatus' => $this->handleDeliveryStatusEvent(...$data),
             default => $this->handleDefault($data),
         };
     }
