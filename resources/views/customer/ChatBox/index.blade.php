@@ -418,7 +418,6 @@
                 )
                 .done(function(response) {
                     let details = `<input type="hidden" value="${chat_id}" name="chat_id" class="chat_id">`;
-                    getUserId();
                     const cwData = JSON.parse(response.data);
 
                     cwData.forEach((sms) => {
