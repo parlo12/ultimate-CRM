@@ -27,12 +27,16 @@ class Handler
             $chatbox = ChatBox::where([
                 'user_id'           => $number->user_id,
                 'sending_server_id' => $sending_server->id,
-            ])->where(function($query) use ($sender) {
-                $query->where('from', $sender)->orWhere('to', $sender);
+            ])->where(function($query) use ($sender, $number) {
+                $query->where(function($query) use ($sender) {
+                    $query->where('from', $sender)->orWhere('to', $sender);
+                })->where(function($query) use ($number) {
+                    $query->where('from', $number->number)->orWhere('to', $number->number);
+                });
             })->first();
 
             
-            if (! $chatbox->exists) {
+            if (! $chatbox) {
                 $chatbox = new ChatBox([
                     'user_id'           => $number->user_id,
                     'from'              => $number->number,
