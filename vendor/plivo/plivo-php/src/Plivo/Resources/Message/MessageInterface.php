@@ -9,6 +9,8 @@ use Plivo\Exceptions\PlivoRestException;
 use Plivo\Exceptions\PlivoResponseException;
 use Plivo\Util\ArrayOperations;
 use Plivo\Util\Template;
+use Plivo\Util\Interactive;
+use Plivo\Util\Location;
 
 use Plivo\MessageClient;
 use Plivo\Resources\ResourceInterface;
@@ -138,6 +140,9 @@ class MessageInterface extends ResourceInterface
      *   + [string] :method - The method used to call the url. Defaults to POST.
      *   + [string] :log - If set to false, the content of this message will not be logged on the Plivo infrastructure and the dst value will be masked (e.g., 141XXXXX528). Default is set to true.
      *   + [template] :template - For sending templated whatsapp messages.
+     *   + [interactive] :interactive - For sending interactive whatsapp messages.
+     *   + [location] :location - For sending location based whatsapp messages.
+     * 
      *   
      * [list] : media_urls - If your sending mms message, you can specify the media urls like ['https://yourmedia_urls/test.jpg','https://test.com/test.gif']
      * @return MessageCreateResponse output
@@ -155,6 +160,8 @@ class MessageInterface extends ResourceInterface
             $powerpackUUID = isset($optionalArgs['powerpackUUID']) ? $optionalArgs['powerpackUUID'] : null;
         }
         $template = isset($optionalArgs['template']) ? $optionalArgs['template'] : null;       
+        $interactive = isset($optionalArgs['interactive']) ? $optionalArgs['interactive'] : null;       
+        $location = isset($optionalArgs['location']) ? $optionalArgs['location'] : null;       
         if (is_array($dst)){
             $mandatoryArgs = [
                 'dst' => implode('<', $dst),
@@ -190,11 +197,6 @@ class MessageInterface extends ResourceInterface
                 "src parameter not present"
             );
         }
-        if (isset($optionalArgs['type'])  && $optionalArgs['type'] != 'whatsapp' && !is_null($template)){
-            throw new PlivoValidationException(
-                'Template paramater is only applicable when message_type is whatsapp'
-            );
-        }
 
         if(!is_null($template)){
             $err = Template::validateTemplate($template);
@@ -207,6 +209,28 @@ class MessageInterface extends ResourceInterface
             $optionalArgs['template'] = json_decode($template,True);
         }
         
+        if(!is_null($interactive)){
+            $err = Interactive::validateInteractive($interactive);
+            if (!is_null($err))
+            {
+                throw new PlivoValidationException(
+                    $err
+                );
+            }
+            $optionalArgs['interactive'] = json_decode($interactive,True);
+        }
+
+        if(!is_null($location)){
+            $err = Location::validateLocation($location);
+            if (!is_null($err))
+            {
+                throw new PlivoValidationException(
+                    $err
+                );
+            }
+            $optionalArgs['location'] = json_decode($location,True);
+        }
+
         $response = $this->client->update(
             $this->uri,
             array_merge($mandatoryArgs,  $optionalArgs, ['src' => $src, 'powerpack_uuid' => $powerpackUUID, 'text' => $text])

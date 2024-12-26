@@ -8,7 +8,9 @@ use Illuminate\Queue\QueueManager;
 use Illuminate\Support\Arr;
 use Laravel\Horizon\Contracts\JobRepository;
 use Laravel\Horizon\RedisQueue;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'horizon:clear')]
 class ClearCommand extends Command
 {
     use ConfirmableTrait;
@@ -19,6 +21,7 @@ class ClearCommand extends Command
      * @var string
      */
     protected $signature = 'horizon:clear
+                            {connection? : The name of the queue connection}
                             {--queue= : The name of the queue to clear}
                             {--force : Force the operation to run when in production}';
 
@@ -46,7 +49,8 @@ class ClearCommand extends Command
             return 1;
         }
 
-        $connection = Arr::first($this->laravel['config']->get('horizon.defaults'))['connection'] ?? 'redis';
+        $connection = $this->argument('connection')
+            ?: Arr::first($this->laravel['config']->get('horizon.defaults'))['connection'] ?? 'redis';
 
         if (method_exists($jobRepository, 'purge')) {
             $jobRepository->purge($queue = $this->getQueue($connection));

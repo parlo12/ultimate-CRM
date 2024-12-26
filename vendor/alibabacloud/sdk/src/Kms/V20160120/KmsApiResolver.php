@@ -5,6 +5,7 @@ namespace AlibabaCloud\Kms\V20160120;
 use AlibabaCloud\Client\Resolver\ApiResolver;
 
 /**
+ * @method AdvanceEncrypt advanceEncrypt(array $options = [])
  * @method AsymmetricDecrypt asymmetricDecrypt(array $options = [])
  * @method AsymmetricEncrypt asymmetricEncrypt(array $options = [])
  * @method AsymmetricSign asymmetricSign(array $options = [])
@@ -51,10 +52,12 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method GenerateDataKeyWithoutPlaintext generateDataKeyWithoutPlaintext(array $options = [])
  * @method GetCertificate getCertificate(array $options = [])
  * @method GetClientKey getClientKey(array $options = [])
+ * @method GetKeyPolicy getKeyPolicy(array $options = [])
  * @method GetKmsInstance getKmsInstance(array $options = [])
  * @method GetParametersForImport getParametersForImport(array $options = [])
  * @method GetPublicKey getPublicKey(array $options = [])
  * @method GetRandomPassword getRandomPassword(array $options = [])
+ * @method GetSecretPolicy getSecretPolicy(array $options = [])
  * @method GetSecretValue getSecretValue(array $options = [])
  * @method ImportKeyMaterial importKeyMaterial(array $options = [])
  * @method ListAliases listAliases(array $options = [])
@@ -77,6 +80,8 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method RotateSecret rotateSecret(array $options = [])
  * @method ScheduleKeyDeletion scheduleKeyDeletion(array $options = [])
  * @method SetDeletionProtection setDeletionProtection(array $options = [])
+ * @method SetKeyPolicy setKeyPolicy(array $options = [])
+ * @method SetSecretPolicy setSecretPolicy(array $options = [])
  * @method TagResource tagResource(array $options = [])
  * @method TagResources tagResources(array $options = [])
  * @method UntagResource untagResource(array $options = [])
@@ -117,6 +122,26 @@ class Rpc extends \AlibabaCloud\Client\Resolver\Rpc
 }
 
 /**
+ * @method string getPaddingMode()
+ * @method $this withPaddingMode($value)
+ * @method string getAad()
+ * @method $this withAad($value)
+ * @method string getKeyId()
+ * @method $this withKeyId($value)
+ * @method string getPlaintext()
+ * @method $this withPlaintext($value)
+ * @method string getIv()
+ * @method $this withIv($value)
+ * @method string getAlgorithm()
+ * @method $this withAlgorithm($value)
+ */
+class AdvanceEncrypt extends Rpc
+{
+}
+
+/**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyVersionId()
  * @method $this withKeyVersionId($value)
  * @method string getKeyId()
@@ -131,6 +156,8 @@ class AsymmetricDecrypt extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyVersionId()
  * @method $this withKeyVersionId($value)
  * @method string getKeyId()
@@ -145,6 +172,8 @@ class AsymmetricEncrypt extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyVersionId()
  * @method $this withKeyVersionId($value)
  * @method string getKeyId()
@@ -159,6 +188,8 @@ class AsymmetricSign extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyVersionId()
  * @method $this withKeyVersionId($value)
  * @method string getKeyId()
@@ -327,6 +358,8 @@ class CreateClientKey extends Rpc
  * @method $this withKeyUsage($value)
  * @method string getDKMSInstanceId()
  * @method $this withDKMSInstanceId($value)
+ * @method string getPolicy()
+ * @method $this withPolicy($value)
  */
 class CreateKey extends Rpc
 {
@@ -397,12 +430,16 @@ class CreatePolicy extends Rpc
  * @method $this withSecretName($value)
  * @method string getSecretDataType()
  * @method $this withSecretDataType($value)
+ * @method string getPolicy()
+ * @method $this withPolicy($value)
  */
 class CreateSecret extends Rpc
 {
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getEncryptionContext()
  * @method $this withEncryptionContext($value)
  * @method string getCiphertextBlob()
@@ -565,6 +602,8 @@ class EnableKey extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyId()
  * @method $this withKeyId($value)
  * @method string getPlaintext()
@@ -577,6 +616,8 @@ class Encrypt extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getPublicKeyBlob()
  * @method $this withPublicKeyBlob($value)
  * @method string getEncryptionContext()
@@ -593,6 +634,8 @@ class ExportDataKey extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyId()
  * @method $this withKeyId($value)
  * @method string getKeySpec()
@@ -613,6 +656,8 @@ class GenerateAndExportDataKey extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyId()
  * @method $this withKeyId($value)
  * @method string getKeySpec()
@@ -627,6 +672,8 @@ class GenerateDataKey extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyId()
  * @method $this withKeyId($value)
  * @method string getKeySpec()
@@ -660,6 +707,16 @@ class GetClientKey extends Rpc
 }
 
 /**
+ * @method string getKeyId()
+ * @method $this withKeyId($value)
+ * @method string getPolicyName()
+ * @method $this withPolicyName($value)
+ */
+class GetKeyPolicy extends Rpc
+{
+}
+
+/**
  * @method string getKmsInstanceId()
  * @method $this withKmsInstanceId($value)
  */
@@ -680,6 +737,8 @@ class GetParametersForImport extends Rpc
 }
 
 /**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getKeyVersionId()
  * @method $this withKeyVersionId($value)
  * @method string getKeyId()
@@ -710,6 +769,18 @@ class GetRandomPassword extends Rpc
 }
 
 /**
+ * @method string getPolicyName()
+ * @method $this withPolicyName($value)
+ * @method string getSecretName()
+ * @method $this withSecretName($value)
+ */
+class GetSecretPolicy extends Rpc
+{
+}
+
+/**
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getVersionId()
  * @method $this withVersionId($value)
  * @method string getVersionStage()
@@ -940,6 +1011,8 @@ class PutSecretValue extends Rpc
 /**
  * @method string getDestinationEncryptionContext()
  * @method $this withDestinationEncryptionContext($value)
+ * @method string getDryRun()
+ * @method $this withDryRun($value)
  * @method string getSourceKeyId()
  * @method $this withSourceKeyId($value)
  * @method string getSourceEncryptionAlgorithm()
@@ -994,6 +1067,30 @@ class ScheduleKeyDeletion extends Rpc
  * @method $this withProtectedResourceArn($value)
  */
 class SetDeletionProtection extends Rpc
+{
+}
+
+/**
+ * @method string getKeyId()
+ * @method $this withKeyId($value)
+ * @method string getPolicyName()
+ * @method $this withPolicyName($value)
+ * @method string getPolicy()
+ * @method $this withPolicy($value)
+ */
+class SetKeyPolicy extends Rpc
+{
+}
+
+/**
+ * @method string getPolicyName()
+ * @method $this withPolicyName($value)
+ * @method string getSecretName()
+ * @method $this withSecretName($value)
+ * @method string getPolicy()
+ * @method $this withPolicy($value)
+ */
+class SetSecretPolicy extends Rpc
 {
 }
 

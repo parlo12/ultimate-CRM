@@ -1,4 +1,65 @@
 # Change Log
+## [4.66.3](https://github.com/plivo/plivo-php/tree/v4.66.3) (2024-11-08)
+**Bug fix**
+-Fix subsquent requests to other services after a lookup request
+
+## [4.66.2](https://github.com/plivo/plivo-php/tree/v4.66.2) (2024-10-23)
+**Feature - FraudCheck param in Create, Get and List Session**
+- Support for the `fraud_check` parameter in sms verify session request
+- Added support for `fraud_check` in GET and LIST verify session.
+
+## [4.66.1](https://github.com/plivo/plivo-php/tree/v4.66.1)(2024-10-10)
+**Feature - Dtmf param in Create, Get and List Session**
+- Support for the `dtmf` parameter in voice verify session request
+- Added support for `dtmf` in GET and LIST verify session.
+
+## [4.66.0](https://github.com/plivo/plivo-php/tree/v4.66.0)(2024-09-30)
+**Feature - Adding new param support for Number Masking session with single party **
+- Added `create_session_with_single_party`, `virtual_number_cooloff_period` and `force_pin_authentication` attributes in Masking Session
+
+## [4.65.3](https://github.com/plivo/plivo-php/tree/v4.65.3)(2024-09-06)
+**Feature - Adding more attribute on mdr object**
+- Added `message_sent_time`, `message_updated_time` and `error-message` on get and list Message API
+
+## [4.65.2](https://github.com/plivo/plivo-php/tree/v4.65.2)(2024-09-06)
+**Feature - Adding support for brand_name,app_hash ,code_length in Create,Get and List Session**
+- Added new request param `brand_name`, `code_length` and `app_hash` in create Session API
+- Added support for `brand_name`,  `code_length` and `app_hash` param in get and list Session response
+- 
+## [4.65.1](https://github.com/plivo/plivo-php/tree/v4.65.1)(2024-09-03)
+**Feature - Adding new element for Audio Stream XML **
+- Added `keepCallAlive` element in Audio Stream XML
+
+## [4.65.0](https://github.com/plivo/plivo-php/tree/v4.65.0)(2024-07-11)
+**Feature - Adding support for Locale param in Create, Get and List Session**
+- Added new request param `locale` in create Session API
+- Added support for `locale` param in get and list Session response
+
+## [4.64.0](https://github.com/plivo/plivo-php/tree/v4.64.0) (2024-05-17)
+**Feature - Adding support for location whatsapp messages**
+- Added new param `location` to [send message API](https://www.plivo.com/docs/sms/api/message#send-a-message) to support location `whatsapp` messages
+- Added new param `location` in templates to support location based templated messages
+
+## [4.63.0](https://github.com/plivo/plivo-php/tree/v4.63.0) (2024-05-07)
+**Feature - Adding support for interactive whatsapp messages**
+- Added new param `interactive` to [send message API](https://www.plivo.com/docs/sms/api/message#send-a-message) to support interactive `whatsapp` messages
+
+## [4.62.0](https://github.com/plivo/plivo-php/tree/v4.62.0) (2024-05-02)
+**Feature - Pin Based Authentication, SubAccount and GeoMatch for Number Masking**
+-  Pin Based Authentication, SubAccount and GeoMatch added in Create Session API for Number Masking
+
+## [4.61.0](https://github.com/plivo/plivo-php/tree/v4.61.0) (2024-04-18)
+**Feature - Support for dynamic button components when sending a templated WhatsApp message**
+- Added new param `payload` in templates to support dynamic payload in templates
+
+## [4.60.0](https://github.com/plivo/plivo-php/tree/v4.60.0) (2024-03-13)
+**Feature - Import Campaign API**
+-  Added import campaign API
+
+## [4.59.2](https://github.com/plivo/plivo-php/tree/v4.59.2) (2024-01-29)
+**Feature - Log Redaction Enhancement**
+-  Added log attribute in GET and List MDR response
+-  Change log field from bool to string in send SMS
 
 ## [4.59.1](https://github.com/plivo/plivo-php/tree/v4.59.1) (2024-01-12)
 **Bug fix - Plivo Signature validation-V3 URL constructor**

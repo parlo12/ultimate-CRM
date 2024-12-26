@@ -15,10 +15,12 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method AddVodTemplate addVodTemplate(array $options = [])
  * @method AddWatermark addWatermark(array $options = [])
  * @method AttachAppPolicyToIdentity attachAppPolicyToIdentity(array $options = [])
+ * @method BatchGetMediaInfos batchGetMediaInfos(array $options = [])
  * @method BatchSetVodDomainConfigs batchSetVodDomainConfigs(array $options = [])
  * @method BatchStartVodDomain batchStartVodDomain(array $options = [])
  * @method BatchStopVodDomain batchStopVodDomain(array $options = [])
  * @method CancelUrlUploadJobs cancelUrlUploadJobs(array $options = [])
+ * @method ChangeResourceGroup changeResourceGroup(array $options = [])
  * @method CreateAppInfo createAppInfo(array $options = [])
  * @method CreateAudit createAudit(array $options = [])
  * @method CreateUploadAttachedMedia createUploadAttachedMedia(array $options = [])
@@ -44,6 +46,7 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method DeleteVodSpecificConfig deleteVodSpecificConfig(array $options = [])
  * @method DeleteVodTemplate deleteVodTemplate(array $options = [])
  * @method DeleteWatermark deleteWatermark(array $options = [])
+ * @method DescribeMediaDistribution describeMediaDistribution(array $options = [])
  * @method DescribePlayTopVideos describePlayTopVideos(array $options = [])
  * @method DescribePlayUserAvg describePlayUserAvg(array $options = [])
  * @method DescribePlayUserTotal describePlayUserTotal(array $options = [])
@@ -51,17 +54,34 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method DescribeVodAIData describeVodAIData(array $options = [])
  * @method DescribeVodCertificateList describeVodCertificateList(array $options = [])
  * @method DescribeVodDomainBpsData describeVodDomainBpsData(array $options = [])
+ * @method DescribeVodDomainBpsDataByLayer describeVodDomainBpsDataByLayer(array $options = [])
  * @method DescribeVodDomainCertificateInfo describeVodDomainCertificateInfo(array $options = [])
  * @method DescribeVodDomainConfigs describeVodDomainConfigs(array $options = [])
  * @method DescribeVodDomainDetail describeVodDomainDetail(array $options = [])
+ * @method DescribeVodDomainHitRateData describeVodDomainHitRateData(array $options = [])
  * @method DescribeVodDomainLog describeVodDomainLog(array $options = [])
+ * @method DescribeVodDomainMax95BpsData describeVodDomainMax95BpsData(array $options = [])
+ * @method DescribeVodDomainQpsData describeVodDomainQpsData(array $options = [])
+ * @method DescribeVodDomainRealTimeBpsData describeVodDomainRealTimeBpsData(array $options = [])
+ * @method DescribeVodDomainRealTimeByteHitRateData describeVodDomainRealTimeByteHitRateData(array $options = [])
+ * @method DescribeVodDomainRealTimeDetailData describeVodDomainRealTimeDetailData(array $options = [])
+ * @method DescribeVodDomainRealTimeHttpCodeData describeVodDomainRealTimeHttpCodeData(array $options = [])
+ * @method DescribeVodDomainRealTimeQpsData describeVodDomainRealTimeQpsData(array $options = [])
+ * @method DescribeVodDomainRealTimeReqHitRateData describeVodDomainRealTimeReqHitRateData(array $options = [])
+ * @method DescribeVodDomainRealTimeTrafficData describeVodDomainRealTimeTrafficData(array $options = [])
+ * @method DescribeVodDomainReqHitRateData describeVodDomainReqHitRateData(array $options = [])
  * @method DescribeVodDomainSrcBpsData describeVodDomainSrcBpsData(array $options = [])
  * @method DescribeVodDomainSrcTrafficData describeVodDomainSrcTrafficData(array $options = [])
  * @method DescribeVodDomainTrafficData describeVodDomainTrafficData(array $options = [])
  * @method DescribeVodDomainUsageData describeVodDomainUsageData(array $options = [])
+ * @method DescribeVodMediaPlayData describeVodMediaPlayData(array $options = [])
+ * @method DescribeVodRangeDataByLocateAndIspService describeVodRangeDataByLocateAndIspService(array $options = [])
  * @method DescribeVodRefreshQuota describeVodRefreshQuota(array $options = [])
  * @method DescribeVodRefreshTasks describeVodRefreshTasks(array $options = [])
+ * @method DescribeVodSSLCertificateList describeVodSSLCertificateList(array $options = [])
  * @method DescribeVodStorageData describeVodStorageData(array $options = [])
+ * @method DescribeVodTieringStorageData describeVodTieringStorageData(array $options = [])
+ * @method DescribeVodTieringStorageRetrievalData describeVodTieringStorageRetrievalData(array $options = [])
  * @method DescribeVodTranscodeData describeVodTranscodeData(array $options = [])
  * @method DescribeVodUserDomains describeVodUserDomains(array $options = [])
  * @method DescribeVodVerifyContent describeVodVerifyContent(array $options = [])
@@ -82,6 +102,7 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method GetEditingProjectMaterials getEditingProjectMaterials(array $options = [])
  * @method GetImageInfo getImageInfo(array $options = [])
  * @method GetImageInfos getImageInfos(array $options = [])
+ * @method GetJobDetail getJobDetail(array $options = [])
  * @method GetMediaAuditAudioResultDetail getMediaAuditAudioResultDetail(array $options = [])
  * @method GetMediaAuditResult getMediaAuditResult(array $options = [])
  * @method GetMediaAuditResultDetail getMediaAuditResultDetail(array $options = [])
@@ -109,6 +130,7 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method ListAppPoliciesForIdentity listAppPoliciesForIdentity(array $options = [])
  * @method ListAuditSecurityIp listAuditSecurityIp(array $options = [])
  * @method ListDynamicImage listDynamicImage(array $options = [])
+ * @method ListJobInfo listJobInfo(array $options = [])
  * @method ListLiveRecordVideo listLiveRecordVideo(array $options = [])
  * @method ListSnapshots listSnapshots(array $options = [])
  * @method ListTranscodeTask listTranscodeTask(array $options = [])
@@ -133,6 +155,7 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method SetEditingProjectMaterials setEditingProjectMaterials(array $options = [])
  * @method SetMessageCallback setMessageCallback(array $options = [])
  * @method SetVodDomainCertificate setVodDomainCertificate(array $options = [])
+ * @method SetVodDomainSSLCertificate setVodDomainSSLCertificate(array $options = [])
  * @method SubmitAIImageAuditJob submitAIImageAuditJob(array $options = [])
  * @method SubmitAIImageJob submitAIImageJob(array $options = [])
  * @method SubmitAIJob submitAIJob(array $options = [])
@@ -351,6 +374,14 @@ class AttachAppPolicyToIdentity extends Rpc
 }
 
 /**
+ * @method string getMediaIds()
+ * @method $this withMediaIds($value)
+ */
+class BatchGetMediaInfos extends Rpc
+{
+}
+
+/**
  * @method string getFunctions()
  * @method $this withFunctions($value)
  * @method string getDomainNames()
@@ -401,10 +432,28 @@ class CancelUrlUploadJobs extends Rpc
 }
 
 /**
+ * @method string getResourceGroupId()
+ * @method $this withResourceGroupId($value)
+ * @method string getResourceRegionId()
+ * @method $this withResourceRegionId($value)
+ * @method string getResourceId()
+ * @method $this withResourceId($value)
+ * @method string getResourceType()
+ * @method $this withResourceType($value)
+ * @method string getService()
+ * @method $this withService($value)
+ */
+class ChangeResourceGroup extends Rpc
+{
+}
+
+/**
  * @method string getDescription()
  * @method $this withDescription($value)
  * @method string getResourceRealOwnerId()
  * @method $this withResourceRealOwnerId($value)
+ * @method string getResourceGroupId()
+ * @method $this withResourceGroupId($value)
  * @method string getAppName()
  * @method $this withAppName($value)
  */
@@ -751,6 +800,23 @@ class DeleteWatermark extends Rpc
 }
 
 /**
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getStorageClass()
+ * @method $this withStorageClass($value)
+ * @method string getInterval()
+ * @method $this withInterval($value)
+ */
+class DescribeMediaDistribution extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+}
+
+/**
  * @method string getPageSize()
  * @method $this withPageSize($value)
  * @method string getOwnerId()
@@ -851,6 +917,28 @@ class DescribeVodDomainBpsData extends Rpc
 }
 
 /**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getLayer()
+ * @method $this withLayer($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getInterval()
+ * @method $this withInterval($value)
+ */
+class DescribeVodDomainBpsDataByLayer extends Rpc
+{
+}
+
+/**
  * @method string getDomainName()
  * @method $this withDomainName($value)
  * @method string getOwnerId()
@@ -889,6 +977,22 @@ class DescribeVodDomainDetail extends Rpc
 /**
  * @method string getStartTime()
  * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getInterval()
+ * @method $this withInterval($value)
+ */
+class DescribeVodDomainHitRateData extends Rpc
+{
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
  * @method string getPageNumber()
  * @method $this withPageNumber($value)
  * @method string getPageSize()
@@ -901,6 +1005,203 @@ class DescribeVodDomainDetail extends Rpc
  * @method $this withOwnerId($value)
  */
 class DescribeVodDomainLog extends Rpc
+{
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getCycle()
+ * @method $this withCycle($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getTimePoint()
+ * @method $this withTimePoint($value)
+ */
+class DescribeVodDomainMax95BpsData extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getInterval()
+ * @method $this withInterval($value)
+ */
+class DescribeVodDomainQpsData extends Rpc
+{
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeBpsData extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeByteHitRateData extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getMerge()
+ * @method $this withMerge($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getMergeLocIsp()
+ * @method $this withMergeLocIsp($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getField()
+ * @method $this withField($value)
+ */
+class DescribeVodDomainRealTimeDetailData extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeHttpCodeData extends Rpc
+{
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeQpsData extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeReqHitRateData extends Rpc
+{
+
+    /** @var string */
+    public $method = 'GET';
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodDomainRealTimeTrafficData extends Rpc
+{
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getInterval()
+ * @method $this withInterval($value)
+ */
+class DescribeVodDomainReqHitRateData extends Rpc
 {
 }
 
@@ -979,6 +1280,48 @@ class DescribeVodDomainUsageData extends Rpc
 }
 
 /**
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ * @method string getPlayDate()
+ * @method $this withPlayDate($value)
+ * @method string getOs()
+ * @method $this withOs($value)
+ * @method string getMediaId()
+ * @method $this withMediaId($value)
+ * @method string getOrderName()
+ * @method $this withOrderName($value)
+ * @method string getPageNo()
+ * @method $this withPageNo($value)
+ * @method string getRegion()
+ * @method $this withRegion($value)
+ * @method string getTerminalType()
+ * @method $this withTerminalType($value)
+ * @method string getOrderType()
+ * @method $this withOrderType($value)
+ */
+class DescribeVodMediaPlayData extends Rpc
+{
+}
+
+/**
+ * @method string getLocationNameEn()
+ * @method $this withLocationNameEn($value)
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getIspNameEn()
+ * @method $this withIspNameEn($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ */
+class DescribeVodRangeDataByLocateAndIspService extends Rpc
+{
+}
+
+/**
  * @method string getOwnerId()
  * @method $this withOwnerId($value)
  * @method string getSecurityToken()
@@ -1017,6 +1360,31 @@ class DescribeVodRefreshTasks extends Rpc
 }
 
 /**
+ * @method string getPageNumber()
+ * @method $this withPageNumber($value)
+ * @method string getSecurityToken()
+ * @method $this withSecurityToken($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
+ * @method string getMatchType()
+ * @method $this withMatchType($value)
+ * @method string getAlgorithm()
+ * @method $this withAlgorithm($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getSearchKeyword()
+ * @method $this withSearchKeyword($value)
+ */
+class DescribeVodSSLCertificateList extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+}
+
+/**
  * @method string getStartTime()
  * @method $this withStartTime($value)
  * @method string getStorage()
@@ -1027,6 +1395,8 @@ class DescribeVodRefreshTasks extends Rpc
  * @method $this withEndTime($value)
  * @method string getOwnerId()
  * @method $this withOwnerId($value)
+ * @method string getAppId()
+ * @method $this withAppId($value)
  * @method string getInterval()
  * @method $this withInterval($value)
  * @method string getRegion()
@@ -1034,6 +1404,48 @@ class DescribeVodRefreshTasks extends Rpc
  */
 class DescribeVodStorageData extends Rpc
 {
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getSplitBy()
+ * @method $this withSplitBy($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getStorageClass()
+ * @method $this withStorageClass($value)
+ * @method string getRegion()
+ * @method $this withRegion($value)
+ */
+class DescribeVodTieringStorageData extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+}
+
+/**
+ * @method string getStartTime()
+ * @method $this withStartTime($value)
+ * @method string getSplitBy()
+ * @method $this withSplitBy($value)
+ * @method string getEndTime()
+ * @method $this withEndTime($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getStorageClass()
+ * @method $this withStorageClass($value)
+ * @method string getRegion()
+ * @method $this withRegion($value)
+ */
+class DescribeVodTieringStorageRetrievalData extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
 }
 
 /**
@@ -1047,6 +1459,8 @@ class DescribeVodStorageData extends Rpc
  * @method $this withSpecification($value)
  * @method string getOwnerId()
  * @method $this withOwnerId($value)
+ * @method string getAppId()
+ * @method $this withAppId($value)
  * @method string getInterval()
  * @method $this withInterval($value)
  * @method string getRegion()
@@ -1356,6 +1770,16 @@ class GetImageInfos extends Rpc
 }
 
 /**
+ * @method string getJobType()
+ * @method $this withJobType($value)
+ * @method string getJobId()
+ * @method $this withJobId($value)
+ */
+class GetJobDetail extends Rpc
+{
+}
+
+/**
  * @method string getResourceOwnerId()
  * @method $this withResourceOwnerId($value)
  * @method string getResourceOwnerAccount()
@@ -1505,6 +1929,8 @@ class GetTranscodeSummary extends Rpc
 /**
  * @method string getTranscodeTaskId()
  * @method $this withTranscodeTaskId($value)
+ * @method string getJobIds()
+ * @method $this withJobIds($value)
  */
 class GetTranscodeTask extends Rpc
 {
@@ -1651,6 +2077,8 @@ class ListAITemplate extends Rpc
 /**
  * @method string getResourceRealOwnerId()
  * @method $this withResourceRealOwnerId($value)
+ * @method string getResourceGroupId()
+ * @method $this withResourceGroupId($value)
  * @method string getPageSize()
  * @method $this withPageSize($value)
  * @method string getTag()
@@ -1689,6 +2117,16 @@ class ListAuditSecurityIp extends Rpc
  * @method $this withVideoId($value)
  */
 class ListDynamicImage extends Rpc
+{
+}
+
+/**
+ * @method string getMediaId()
+ * @method $this withMediaId($value)
+ * @method string getJobType()
+ * @method $this withJobType($value)
+ */
+class ListJobInfo extends Rpc
 {
 }
 
@@ -1799,10 +2237,16 @@ class MoveAppResource extends Rpc
 /**
  * @method string getObjectPath()
  * @method $this withObjectPath($value)
- * @method string getOwnerId()
- * @method $this withOwnerId($value)
  * @method string getSecurityToken()
  * @method $this withSecurityToken($value)
+ * @method string getL2Preload()
+ * @method $this withL2Preload($value)
+ * @method string getArea()
+ * @method $this withArea($value)
+ * @method string getWithHeader()
+ * @method $this withWithHeader($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
  */
 class PreloadVodObjectCaches extends Rpc
 {
@@ -1879,12 +2323,14 @@ class RefreshUploadVideo extends Rpc
 /**
  * @method string getObjectPath()
  * @method $this withObjectPath($value)
- * @method string getOwnerId()
- * @method $this withOwnerId($value)
  * @method string getSecurityToken()
  * @method $this withSecurityToken($value)
  * @method string getObjectType()
  * @method $this withObjectType($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getForce()
+ * @method $this withForce($value)
  */
 class RefreshVodObjectCaches extends Rpc
 {
@@ -2095,6 +2541,37 @@ class SetVodDomainCertificate extends Rpc
 }
 
 /**
+ * @method string getSSLProtocol()
+ * @method $this withSSLProtocol($value)
+ * @method string getCertId()
+ * @method $this withCertId($value)
+ * @method string getSecurityToken()
+ * @method $this withSecurityToken($value)
+ * @method string getCertType()
+ * @method $this withCertType($value)
+ * @method string getSSLPri()
+ * @method $this withSSLPri($value)
+ * @method string getCertRegion()
+ * @method $this withCertRegion($value)
+ * @method string getCertName()
+ * @method $this withCertName($value)
+ * @method string getDomainName()
+ * @method $this withDomainName($value)
+ * @method string getOwnerId()
+ * @method $this withOwnerId($value)
+ * @method string getEnv()
+ * @method $this withEnv($value)
+ * @method string getSSLPub()
+ * @method $this withSSLPub($value)
+ */
+class SetVodDomainSSLCertificate extends Rpc
+{
+
+    /** @var string */
+    public $scheme = 'https';
+}
+
+/**
  * @method string getResourceOwnerId()
  * @method $this withResourceOwnerId($value)
  * @method string getResourceOwnerAccount()
@@ -2263,6 +2740,8 @@ class SubmitSnapshotJob extends Rpc
 }
 
 /**
+ * @method string getSessionId()
+ * @method $this withSessionId($value)
  * @method string getUserData()
  * @method $this withUserData($value)
  * @method string getVideoId()
@@ -2419,6 +2898,8 @@ class UpdateTranscodeTemplateGroup extends Rpc
  * @method $this withTitle($value)
  * @method string getCoverURL()
  * @method $this withCoverURL($value)
+ * @method string getUserData()
+ * @method $this withUserData($value)
  * @method string getDownloadSwitch()
  * @method $this withDownloadSwitch($value)
  * @method string getCateId()
@@ -2525,6 +3006,8 @@ class UploadMediaByURL extends Rpc
  * @method $this withStreamURL($value)
  * @method string getMediaId()
  * @method $this withMediaId($value)
+ * @method string getUploadMetadata()
+ * @method $this withUploadMetadata($value)
  */
 class UploadStreamByURL extends Rpc
 {

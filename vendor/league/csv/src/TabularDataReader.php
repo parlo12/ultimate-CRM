@@ -15,6 +15,7 @@ namespace League\Csv;
 
 use Closure;
 use Countable;
+use Deprecated;
 use Iterator;
 use IteratorAggregate;
 
@@ -26,22 +27,25 @@ use IteratorAggregate;
  * @method array first() returns the first record from the tabular data.
  * @method array nth(int $nth_record) returns the nth record from the tabular data.
  * @method mixed value(int|string $column = 0) returns a given value from the first element of the tabular data.
- * @method Iterator nthAsObject(int $nth, string $className, array $header = []) returns the nth record from the tabular data as an instance of the defined class name.
- * @method Iterator firstAsObject(string $className, array $header = []) returns the first record from the tabular data as an instance of the defined class name.
- * @method bool each(Closure $closure) iterates over each record and passes it to a closure. Iteration is interrupted if the closure returns false
- * @method bool exists(Closure $closure) tells whether at least one record satisfies the predicate.
- * @method mixed reduce(Closure $closure, mixed $initial = null) reduces the collection to a single value, passing the result of each iteration into the subsequent iteration
+ * @method object|null nthAsObject(int $nth, string $className, array $header = []) returns the nth record from the tabular data as an instance of the defined class name.
+ * @method object|null firstAsObject(string $className, array $header = []) returns the first record from the tabular data as an instance of the defined class name.
+ * @method bool each(Closure $callback) iterates over each record and passes it to a closure. Iteration is interrupted if the closure returns false
+ * @method bool exists(Closure $callback) tells whether at least one record satisfies the predicate.
+ * @method mixed reduce(Closure $callback, mixed $initial = null) reduces the collection to a single value, passing the result of each iteration into the subsequent iteration
  * @method Iterator getObjects(string $className, array $header = []) Returns the tabular data records as an iterator object containing instance of the defined class name.
  * @method Iterator getRecordsAsObject(string $className, array $header = []) Returns the tabular data records as an iterator object containing instance of the defined class name.
- * @method TabularDataReader filter(Closure $closure) returns all the elements of this collection for which your callback function returns `true`
- * @method TabularDataReader slice(int $offset, int $length = null) extracts a slice of $length elements starting at position $offset from the Collection.
- * @method TabularDataReader sorted(Closure $orderBy) sorts the Collection according to the closure provided see Statement::orderBy method
+ * @method TabularDataReader filter(Query\Predicate|Closure $predicate) returns all the elements of this collection for which your callback function returns `true`
+ * @method TabularDataReader slice(int $offset, ?int $length = null) extracts a slice of $length elements starting at position $offset from the Collection.
+ * @method TabularDataReader sorted(Query\Sort|Closure $orderBy) sorts the Collection according to the closure provided see Statement::orderBy method
  * @method TabularDataReader select(string|int ...$columnOffsetOrName) extract a selection of the tabular data records columns.
  * @method TabularDataReader matchingFirstOrFail(string $expression) extract the first found fragment identifier of the tabular data or fail
  * @method TabularDataReader|null matchingFirst(string $expression) extract the first found fragment identifier of the tabular data or return null if none is found
  * @method iterable<int, TabularDataReader> matching(string $expression) extract all found fragment identifiers for the tabular data
  * @method iterable<TabularDataReader> chunkBy(int $recordsCount) Chunk the TabulaDataReader into smaller TabularDataReader instances of the given size or less.
  * @method TabularDataReader mapHeader(array $headers) Returns a new TabulaDataReader with a new set of headers.
+ *
+ * @template TValue of array
+ * @template-extends IteratorAggregate<array-key, TValue>
  */
 interface TabularDataReader extends Countable, IteratorAggregate
 {
@@ -111,7 +115,7 @@ interface TabularDataReader extends Countable, IteratorAggregate
     public function fetchPairs($offset_index = 0, $value_index = 1): Iterator;
 
     /**
-     * DEPRECATION WARNING! This class will be removed in the next major point release.
+     * DEPRECATION WARNING! This method will be removed in the next major point release.
      *
      * @deprecated since version 9.9.0
      *
@@ -123,16 +127,10 @@ interface TabularDataReader extends Countable, IteratorAggregate
      *
      * @throws UnableToProcessCsv if argument is less than 0
      */
+    #[Deprecated(message:'use League\Csv\TabularDataReader::nth() instead', since:'league/csv:9.9.0')]
     public function fetchOne(int $nth_record = 0): array;
 
     /**
-     * DEPRECATION WARNING! This class will be removed in the next major point release.
-     *
-     * @deprecated since version 9.8.0
-     *
-     * @see ::fetchColumnByName
-     * @see ::fetchColumnByOffset
-     *
      * Returns a single column from the next record of the tabular data.
      *
      * By default, if no value is supplied the first column is fetched

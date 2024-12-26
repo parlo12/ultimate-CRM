@@ -15,10 +15,12 @@ namespace League\Csv;
 
 use ArrayIterator;
 use CallbackFilterIterator;
+use Closure;
+use Deprecated;
 use Iterator;
-use LimitIterator;
-
 use OutOfBoundsException;
+use ReflectionException;
+use ReflectionFunction;
 
 use function array_key_exists;
 use function array_reduce;
@@ -28,12 +30,15 @@ use function is_string;
 
 /**
  * Criteria to filter a {@link TabularDataReader} object.
+ *
+ * @phpstan-import-type ConditionExtended from Query\PredicateCombinator
+ * @phpstan-import-type OrderingExtended from Query\SortCombinator
  */
 class Statement
 {
-    /** @var array<callable> Callables to filter the iterator. */
+    /** @var array<ConditionExtended> Callables to filter the iterator. */
     protected array $where = [];
-    /** @var array<callable> Callables to sort the iterator. */
+    /** @var array<OrderingExtended> Callables to sort the iterator. */
     protected array $order_by = [];
     /** iterator Offset. */
     protected int $offset = 0;
@@ -43,16 +48,30 @@ class Statement
     protected array $select = [];
 
     /**
+     * @param ?callable(array, array-key): bool $where, Deprecated argument use Statement::where instead
+     * @param int $offset, Deprecated argument use Statement::offset instead
+     * @param int $limit, Deprecated argument use Statement::limit instead
+     *
      * @throws Exception
+     * @throws InvalidArgument
+     * @throws ReflectionException
      */
-    public static function create(callable $where = null, int $offset = 0, int $limit = -1): self
+    public static function create(?callable $where = null, int $offset = 0, int $limit = -1): self
     {
         $stmt = new self();
         if (null !== $where) {
             $stmt = $stmt->where($where);
         }
 
-        return $stmt->offset($offset)->limit($limit);
+        if (0 !== $offset) {
+            $stmt = $stmt->offset($offset);
+        }
+
+        if (-1 !== $limit) {
+            $stmt = $stmt->limit($limit);
+        }
+
+        return $stmt;
     }
 
     /**
@@ -72,9 +91,16 @@ class Statement
 
     /**
      * Sets the Iterator filter method.
+     *
+     * @param callable(array, array-key): bool $where
+     *
+     * @throws ReflectionException
+     * @throws InvalidArgument
      */
     public function where(callable $where): self
     {
+        $where = self::wrapSingleArgumentCallable($where);
+
         $clone = clone $this;
         $clone->where[] = $where;
 
@@ -82,14 +108,149 @@ class Statement
     }
 
     /**
-     * Sets an Iterator sorting callable function.
+     * Sanitize the number of required parameters for a predicate.
+     *
+     * To avoid BC break in 9.16+ version the predicate should have
+     * at least 1 required argument.
+     *
+     * @throws InvalidArgument
+     * @throws ReflectionException
+     *
+     * @return ConditionExtended
      */
-    public function orderBy(callable $order_by): self
+    final protected static function wrapSingleArgumentCallable(callable $where): callable
+    {
+        if ($where instanceof Query\Predicate) {
+            return $where;
+        }
+
+        $reflection = new ReflectionFunction($where instanceof Closure ? $where : $where(...));
+
+        return match ($reflection->getNumberOfRequiredParameters()) {
+            0 => throw new InvalidArgument('The where condition must be callable with 2 required parameters.'),
+            1 => fn (mixed $record, int $key) => $where($record),
+            default => $where,
+        };
+    }
+
+    public function andWhere(string|int $column, Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('and', Query\Constraint\Column::filterOn($column, $operator, $value));
+    }
+
+    public function orWhere(string|int $column, Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('or', Query\Constraint\Column::filterOn($column, $operator, $value));
+    }
+
+    public function whereNot(string|int $column, Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('not', Query\Constraint\Column::filterOn($column, $operator, $value));
+    }
+
+    public function xorWhere(string|int $column, Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('xor', Query\Constraint\Column::filterOn($column, $operator, $value));
+    }
+
+    public function andWhereColumn(string|int $first, Query\Constraint\Comparison|callable|string $operator, array|int|string $second): self
+    {
+        return $this->appendWhere('and', Query\Constraint\TwoColumns::filterOn($first, $operator, $second));
+    }
+
+    public function orWhereColumn(string|int $first, Query\Constraint\Comparison|callable|string $operator, array|int|string $second): self
+    {
+        return $this->appendWhere('or', Query\Constraint\TwoColumns::filterOn($first, $operator, $second));
+    }
+
+    public function xorWhereColumn(string|int $first, Query\Constraint\Comparison|callable|string $operator, array|int|string $second): self
+    {
+        return $this->appendWhere('xor', Query\Constraint\TwoColumns::filterOn($first, $operator, $second));
+    }
+
+    public function whereNotColumn(string|int $first, Query\Constraint\Comparison|callable|string $operator, array|int|string $second): self
+    {
+        return $this->appendWhere('not', Query\Constraint\TwoColumns::filterOn($first, $operator, $second));
+    }
+
+    public function andWhereOffset(Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('and', Query\Constraint\Offset::filterOn($operator, $value));
+    }
+
+    public function orWhereOffset(Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('or', Query\Constraint\Offset::filterOn($operator, $value));
+    }
+
+    public function xorWhereOffset(Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('xor', Query\Constraint\Offset::filterOn($operator, $value));
+    }
+
+    public function whereNotOffset(Query\Constraint\Comparison|Closure|callable|string $operator, mixed $value = null): self
+    {
+        return $this->appendWhere('not', Query\Constraint\Offset::filterOn($operator, $value));
+    }
+
+    /**
+     * @param 'and'|'not'|'or'|'xor' $joiner
+     */
+    final protected function appendWhere(string $joiner, Query\Predicate $predicate): self
+    {
+        if ([] === $this->where) {
+            return $this->where(match ($joiner) {
+                'and' => $predicate,
+                'not' => Query\Constraint\Criteria::none($predicate),
+                'or' => Query\Constraint\Criteria::any($predicate),
+                'xor' => Query\Constraint\Criteria::xany($predicate),
+            });
+        }
+
+        $predicates = Query\Constraint\Criteria::all(...$this->where);
+
+        $clone = clone $this;
+        $clone->where = [match ($joiner) {
+            'and' => $predicates->and($predicate),
+            'not' => $predicates->not($predicate),
+            'or' => $predicates->or($predicate),
+            'xor' => $predicates->xor($predicate),
+        }];
+
+        return $clone;
+    }
+
+    /**
+     * Sets an Iterator sorting callable function.
+     *
+     * @param OrderingExtended $order_by
+     */
+    public function orderBy(callable|Query\Sort|Closure $order_by): self
     {
         $clone = clone $this;
         $clone->order_by[] = $order_by;
 
         return $clone;
+    }
+
+    /**
+     * Ascending ordering of the tabular data according to a column value.
+     *
+     * The column value can be modified using the callback before ordering.
+     */
+    public function orderByAsc(string|int $column, callable|Closure|null $callback = null): self
+    {
+        return $this->orderBy(Query\Ordering\Column::sortOn($column, 'asc', $callback));
+    }
+
+    /**
+     * Descending ordering of the tabular data according to a column value.
+     *
+     * The column value can be modified using the callback before ordering.
+     */
+    public function orderByDesc(string|int $column, callable|Closure|null $callback = null): self
+    {
+        return $this->orderBy(Query\Ordering\Column::sortOn($column, 'desc', $callback));
     }
 
     /**
@@ -120,10 +281,7 @@ class Statement
      */
     public function limit(int $limit): self
     {
-        if (-1 > $limit) {
-            throw InvalidArgument::dueToInvalidLimit($limit, __METHOD__);
-        }
-
+        $limit >= -1 || throw InvalidArgument::dueToInvalidLimit($limit, __METHOD__);
         if ($limit === $this->limit) {
             return $this;
         }
@@ -135,9 +293,29 @@ class Statement
     }
 
     /**
-     * Executes the prepared Statement on the {@link Reader} object.
+     * Apply the callback if the given "condition" is (or resolves to) true.
      *
-     * @param array<string> $header an optional header to use instead of the CSV document header
+     * @param (callable($this): bool)|bool $condition
+     * @param callable($this): (self|null) $onSuccess
+     * @param ?callable($this): (self|null) $onFail
+     */
+    public function when(callable|bool $condition, callable $onSuccess, ?callable $onFail = null): self
+    {
+        if (!is_bool($condition)) {
+            $condition = $condition($this);
+        }
+
+        return match (true) {
+            $condition => $onSuccess($this),
+            null !== $onFail => $onFail($this),
+            default => $this,
+        } ?? $this;
+    }
+
+    /**
+     * Executes the prepared Statement on the {@link TabularDataReader} object.
+     *
+     * @param array<string> $header an optional header to use instead of the tabular data header
      *
      * @throws InvalidArgument
      * @throws SyntaxError
@@ -149,80 +327,33 @@ class Statement
         }
 
         $iterator = $tabular_data->getRecords($header);
-        $iterator = $this->applyFilter($iterator);
-        $iterator = $this->buildOrderBy($iterator);
-        $iterator = new LimitIterator($iterator, $this->offset, $this->limit);
-
-        return $this->applySelect($iterator, $header);
-    }
-
-    /**
-     * Filters elements of an Iterator using a callback function.
-     */
-    protected function applyFilter(Iterator $iterator): Iterator
-    {
-        $filter = function (array $record, string|int $key): bool {
-            foreach ($this->where as $where) {
-                if (true !== $where($record, $key)) {
-                    return false;
-                }
-            }
-
-            return true;
-        };
-
-        return new CallbackFilterIterator($iterator, $filter);
-    }
-
-    /**
-     * Sorts the Iterator.
-     */
-    protected function buildOrderBy(Iterator $iterator): Iterator
-    {
-        if ([] === $this->order_by) {
-            return $iterator;
+        if ([] !== $this->where) {
+            $iterator = Query\Constraint\Criteria::all(...$this->where)->filter($iterator);
         }
 
-        $compare = function (array $record_a, array $record_b): int {
-            foreach ($this->order_by as $callable) {
-                if (0 !== ($cmp = $callable($record_a, $record_b))) {
-                    return $cmp;
-                }
-            }
+        if ([] !== $this->order_by) {
+            $iterator = Query\Ordering\MultiSort::all(...$this->order_by)->sort($iterator);
+        }
 
-            return $cmp ?? 0;
-        };
+        if (0 !== $this->offset || -1 !== $this->limit) {
+            $iterator = Query\Limit::new($this->offset, $this->limit)->slice($iterator);
+        }
 
-
-        $class = new class () extends ArrayIterator {
-            public function seek(int $offset): void
-            {
-                try {
-                    parent::seek($offset);
-                } catch (OutOfBoundsException) {
-                    return;
-                }
-            }
-        };
-
-        /** @var ArrayIterator<array-key, array<string|null>> $it */
-        $it = new $class([...$iterator]);
-        $it->uasort($compare);
-
-        return $it;
+        return (new ResultSet($iterator, $header))->select(...$this->select);
     }
 
     /**
+     * DEPRECATION WARNING! This method will be removed in the next major point release.
      *
      * @throws InvalidArgument
+     *
      * @throws SyntaxError
+     * @see Statement::process()
+     * @deprecated Since version 9.16.0
      */
-    protected function applySelect(Iterator $records, array $recordsHeader): TabularDataReader
+    #[Deprecated(message:'this method no longer affects on the outcome of the class, use League\Csv\Statement::process() instead', since:'league/csv:9.16.0')]
+    protected function applySelect(Iterator $records, array $recordsHeader, array $select): TabularDataReader
     {
-        if ([] === $this->select) {
-            return new ResultSet($records, $recordsHeader);
-        }
-
         $hasHeader = [] !== $recordsHeader;
         $selectColumn = function (array $header, string|int $field) use ($recordsHeader, $hasHeader): array {
             if (is_string($field)) {
@@ -246,8 +377,8 @@ class Statement
         };
 
         /** @var array<string> $header */
-        $header = array_reduce($this->select, $selectColumn, []);
-        $records = new MapIterator($records, function (array $record) use ($header): array {
+        $header = array_reduce($select, $selectColumn, []);
+        $callback = function (array $record) use ($header): array {
             $element = [];
             $row = array_values($record);
             foreach ($header as $offset => $headerName) {
@@ -255,9 +386,9 @@ class Statement
             }
 
             return $element;
-        });
+        };
 
-        return new ResultSet($records, $hasHeader ? $header : []);
+        return new ResultSet(new MapIterator($records, $callback), $hasHeader ? $header : []);
     }
 
     /**
@@ -269,8 +400,78 @@ class Statement
      * @deprecated Since version 9.15.0
      * @codeCoverageIgnore
      */
+    #[Deprecated(message:'this method no longer affects on the outcome of the class, use League\Csv\Statement::applyFilter() instead', since:'league/csv:9.15.0')]
     protected function filter(Iterator $iterator, callable $callable): CallbackFilterIterator
     {
         return new CallbackFilterIterator($iterator, $callable);
+    }
+
+    /**
+     * Filters elements of an Iterator using a callback function.
+     *
+     * DEPRECATION WARNING! This method will be removed in the next major point release.
+     *
+     * @see Statement::process()
+     * @deprecated Since version 9.16.0
+     * @codeCoverageIgnore
+     */
+    #[Deprecated(message:'this method no longer affects on the outcome of the class, use League\Csv\Statement::process() instead', since:'league/csv:9.16.0')]
+    protected function applyFilter(Iterator $iterator): Iterator
+    {
+        $filter = function (array $record, string|int $key): bool {
+            foreach ($this->where as $where) {
+                if (true !== $where($record, $key)) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
+        return new CallbackFilterIterator($iterator, $filter);
+    }
+
+    /**
+     * Sorts the Iterator.
+     *
+     * DEPRECATION WARNING! This method will be removed in the next major point release.
+     *
+     * @see Statement::process()
+     * @deprecated Since version 9.16.0
+     * @codeCoverageIgnore
+     */
+    #[Deprecated(message:'this method no longer affects on the outcome of the class, use League\Csv\Statement::process() instead', since:'league/csv:9.16.0')]
+    protected function buildOrderBy(Iterator $iterator): Iterator
+    {
+        if ([] === $this->order_by) {
+            return $iterator;
+        }
+
+        $compare = function (array $record_a, array $record_b): int {
+            foreach ($this->order_by as $callable) {
+                if (0 !== ($cmp = $callable($record_a, $record_b))) {
+                    return $cmp;
+                }
+            }
+
+            return $cmp ?? 0;
+        };
+
+        $class = new class () extends ArrayIterator {
+            public function seek(int $offset): void
+            {
+                try {
+                    parent::seek($offset);
+                } catch (OutOfBoundsException) {
+                    return;
+                }
+            }
+        };
+
+        /** @var ArrayIterator<array-key, array<string|null>> $it */
+        $it = new $class([...$iterator]);
+        $it->uasort($compare);
+
+        return $it;
     }
 }

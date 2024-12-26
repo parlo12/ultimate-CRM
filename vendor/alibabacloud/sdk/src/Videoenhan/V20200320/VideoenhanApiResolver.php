@@ -173,6 +173,7 @@ class AbstractFilmVideo extends Rpc
 /**
  * @method string getUserId()
  * @method string getVideoScene()
+ * @method string getReturnTrans()
  * @method string getAsync()
  * @method string getVideoURL()
  */
@@ -201,6 +202,19 @@ class AddFaceVideoTemplate extends Rpc
     {
         $this->data['VideoScene'] = $value;
         $this->options['form_params']['VideoScene'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withReturnTrans($value)
+    {
+        $this->data['ReturnTrans'] = $value;
+        $this->options['form_params']['ReturnTrans'] = $value;
 
         return $this;
     }
@@ -1444,8 +1458,12 @@ class MergeVideoModelFace extends Rpc
 /**
  * @method string getUserId()
  * @method $this withUserId($value)
+ * @method string getPageSize()
+ * @method $this withPageSize($value)
  * @method string getTemplateId()
  * @method $this withTemplateId($value)
+ * @method string getPageNo()
+ * @method $this withPageNo($value)
  */
 class QueryFaceVideoTemplate extends Rpc
 {

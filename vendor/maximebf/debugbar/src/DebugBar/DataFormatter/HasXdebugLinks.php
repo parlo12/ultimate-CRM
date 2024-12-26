@@ -81,7 +81,7 @@ trait HasXdebugLinks
                 'url' => $url,
                 'ajax' => $this->getXdebugShouldUseAjax(),
                 'filename' => basename($file),
-                'line' => (string) $line
+                'line' => (string) $line ?: '?'
             ];
         }
     }
@@ -108,6 +108,7 @@ trait HasXdebugLinks
             'textmate' => 'txmt://open?url=file://%f&line=%l',
             'emacs' => 'emacs://open?url=file://%f&line=%l',
             'macvim' => 'mvim://open/?url=file://%f&line=%l',
+            'codelite' => 'codelite://open?file=%f&line=%l',
             'phpstorm' => 'phpstorm://open?file=%f&line=%l',
             'phpstorm-remote' => 'javascript:(()=>{let r=new XMLHttpRequest;' .
                 'r.open(\'get\',\'http://localhost:63342/api/file/%f:%l\');r.send();})()',
@@ -119,7 +120,7 @@ trait HasXdebugLinks
             'vscode-remote' => 'vscode://vscode-remote/%f:%l',
             'vscode-insiders-remote' => 'vscode-insiders://vscode-remote/%f:%l',
             'vscodium' => 'vscodium://file/%f:%l',
-            'nova' => 'nova://core/open/file?filename=%f&line=%l',
+            'nova' => 'nova://open?path=%f&line=%l',
             'xdebug' => 'xdebug://%f@%l',
             'atom' => 'atom://core/open/file?filename=%f&line=%l',
             'espresso' => 'x-espresso://open?filepath=%f&lines=%l',

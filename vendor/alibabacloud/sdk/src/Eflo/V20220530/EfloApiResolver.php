@@ -5,6 +5,7 @@ namespace AlibabaCloud\Eflo\V20220530;
 use AlibabaCloud\Client\Resolver\ApiResolver;
 
 /**
+ * @method AssignLeniPrivateIpAddress assignLeniPrivateIpAddress(array $options = [])
  * @method AssignPrivateIpAddress assignPrivateIpAddress(array $options = [])
  * @method AssociateVpdCidrBlock associateVpdCidrBlock(array $options = [])
  * @method CreateElasticNetworkInterface createElasticNetworkInterface(array $options = [])
@@ -33,6 +34,7 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method GetErRouteEntry getErRouteEntry(array $options = [])
  * @method GetErRouteMap getErRouteMap(array $options = [])
  * @method GetFabricTopology getFabricTopology(array $options = [])
+ * @method GetLeniPrivateIpAddress getLeniPrivateIpAddress(array $options = [])
  * @method GetLniPrivateIpAddress getLniPrivateIpAddress(array $options = [])
  * @method GetNetworkInterface getNetworkInterface(array $options = [])
  * @method GetNodeInfoForPod getNodeInfoForPod(array $options = [])
@@ -50,10 +52,12 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method ListErRouteMaps listErRouteMaps(array $options = [])
  * @method ListErs listErs(array $options = [])
  * @method ListInstancesByNcd listInstancesByNcd(array $options = [])
+ * @method ListLeniPrivateIpAddresses listLeniPrivateIpAddresses(array $options = [])
  * @method ListLniPrivateIpAddress listLniPrivateIpAddress(array $options = [])
  * @method ListNetworkInterfaces listNetworkInterfaces(array $options = [])
  * @method ListNodeInfosForPod listNodeInfosForPod(array $options = [])
  * @method ListSubnets listSubnets(array $options = [])
+ * @method ListVccFlowInfos listVccFlowInfos(array $options = [])
  * @method ListVccGrantRules listVccGrantRules(array $options = [])
  * @method ListVccRouteEntries listVccRouteEntries(array $options = [])
  * @method ListVccs listVccs(array $options = [])
@@ -61,12 +65,14 @@ use AlibabaCloud\Client\Resolver\ApiResolver;
  * @method ListVpdRouteEntries listVpdRouteEntries(array $options = [])
  * @method ListVpds listVpds(array $options = [])
  * @method QueryInstanceNcd queryInstanceNcd(array $options = [])
+ * @method UnassignLeniPrivateIpAddress unassignLeniPrivateIpAddress(array $options = [])
  * @method UnAssignPrivateIpAddress unAssignPrivateIpAddress(array $options = [])
  * @method UnAssociateVpdCidrBlock unAssociateVpdCidrBlock(array $options = [])
  * @method UpdateElasticNetworkInterface updateElasticNetworkInterface(array $options = [])
  * @method UpdateEr updateEr(array $options = [])
  * @method UpdateErAttachment updateErAttachment(array $options = [])
  * @method UpdateErRouteMap updateErRouteMap(array $options = [])
+ * @method UpdateLeniPrivateIpAddress updateLeniPrivateIpAddress(array $options = [])
  * @method UpdateSubnet updateSubnet(array $options = [])
  * @method UpdateVcc updateVcc(array $options = [])
  * @method UpdateVpd updateVpd(array $options = [])
@@ -88,6 +94,68 @@ class Rpc extends \AlibabaCloud\Client\Resolver\Rpc
 
     /** @var string */
     public $serviceCode = 'eflo';
+}
+
+/**
+ * @method string getClientToken()
+ * @method string getDescription()
+ * @method string getPrivateIpAddress()
+ * @method string getElasticNetworkInterfaceId()
+ */
+class AssignLeniPrivateIpAddress extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withClientToken($value)
+    {
+        $this->data['ClientToken'] = $value;
+        $this->options['form_params']['ClientToken'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDescription($value)
+    {
+        $this->data['Description'] = $value;
+        $this->options['form_params']['Description'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPrivateIpAddress($value)
+    {
+        $this->data['PrivateIpAddress'] = $value;
+        $this->options['form_params']['PrivateIpAddress'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withElasticNetworkInterfaceId($value)
+    {
+        $this->data['ElasticNetworkInterfaceId'] = $value;
+        $this->options['form_params']['ElasticNetworkInterfaceId'] = $value;
+
+        return $this;
+    }
 }
 
 /**
@@ -233,6 +301,7 @@ class AssociateVpdCidrBlock extends Rpc
  * @method string getSecurityGroupId()
  * @method string getDescription()
  * @method string getNodeId()
+ * @method string getEnableJumboFrame()
  * @method string getVSwitchId()
  * @method string getVpcId()
  * @method string getZoneId()
@@ -297,6 +366,19 @@ class CreateElasticNetworkInterface extends Rpc
      *
      * @return $this
      */
+    public function withEnableJumboFrame($value)
+    {
+        $this->data['EnableJumboFrame'] = $value;
+        $this->options['form_params']['EnableJumboFrame'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withVSwitchId($value)
     {
         $this->data['VSwitchId'] = $value;
@@ -336,6 +418,7 @@ class CreateElasticNetworkInterface extends Rpc
  * @method string getDescription()
  * @method string getErName()
  * @method string getMasterZoneId()
+ * @method string getResourceGroupId()
  */
 class CreateEr extends Rpc
 {
@@ -375,6 +458,19 @@ class CreateEr extends Rpc
     {
         $this->data['MasterZoneId'] = $value;
         $this->options['form_params']['MasterZoneId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -732,6 +828,7 @@ class CreateSubnet extends Rpc
  * @method string getCenId()
  * @method string getDescription()
  * @method string getCenOwnerId()
+ * @method string getBgpAsn()
  * @method string getAccessCouldService()
  * @method string getResourceGroupId()
  * @method string getVccName()
@@ -795,6 +892,19 @@ class CreateVcc extends Rpc
     {
         $this->data['CenOwnerId'] = $value;
         $this->options['form_params']['CenOwnerId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withBgpAsn($value)
+    {
+        $this->data['BgpAsn'] = $value;
+        $this->options['form_params']['BgpAsn'] = $value;
 
         return $this;
     }
@@ -1692,7 +1802,9 @@ class GetErRouteMap extends Rpc
 }
 
 /**
+ * @method string getClusterId()
  * @method string getVpdId()
+ * @method string getVpcId()
  * @method array getLniIds()
  * @method array getNodeIds()
  */
@@ -1704,10 +1816,36 @@ class GetFabricTopology extends Rpc
      *
      * @return $this
      */
+    public function withClusterId($value)
+    {
+        $this->data['ClusterId'] = $value;
+        $this->options['form_params']['ClusterId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
     public function withVpdId($value)
     {
         $this->data['VpdId'] = $value;
         $this->options['form_params']['VpdId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVpcId($value)
+    {
+        $this->data['VpcId'] = $value;
+        $this->options['form_params']['VpcId'] = $value;
 
         return $this;
     }
@@ -1740,6 +1878,40 @@ class GetFabricTopology extends Rpc
 		}
 
 		return $this;
+    }
+}
+
+/**
+ * @method string getIpName()
+ * @method string getElasticNetworkInterfaceId()
+ */
+class GetLeniPrivateIpAddress extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIpName($value)
+    {
+        $this->data['IpName'] = $value;
+        $this->options['form_params']['IpName'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withElasticNetworkInterfaceId($value)
+    {
+        $this->data['ElasticNetworkInterfaceId'] = $value;
+        $this->options['form_params']['ElasticNetworkInterfaceId'] = $value;
+
+        return $this;
     }
 }
 
@@ -1866,6 +2038,7 @@ class GetSubnet extends Rpc
 }
 
 /**
+ * @method string getClientToken()
  * @method string getPageNumber()
  * @method string getEnablePage()
  * @method string getPageSize()
@@ -1873,6 +2046,19 @@ class GetSubnet extends Rpc
  */
 class GetVcc extends Rpc
 {
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withClientToken($value)
+    {
+        $this->data['ClientToken'] = $value;
+        $this->options['form_params']['ClientToken'] = $value;
+
+        return $this;
+    }
 
     /**
      * @param string $value
@@ -2322,6 +2508,7 @@ class ListElasticNetworkInterfaces extends Rpc
 /**
  * @method string getPageNumber()
  * @method string getResourceTenantId()
+ * @method string getResourceGroupId()
  * @method string getAutoReceiveAllRoute()
  * @method string getPageSize()
  * @method string getInstanceType()
@@ -2357,6 +2544,19 @@ class ListErAttachments extends Rpc
     {
         $this->data['ResourceTenantId'] = $value;
         $this->options['form_params']['ResourceTenantId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -2483,6 +2683,7 @@ class ListErAttachments extends Rpc
  * @method string getIgnoreDetailedRouteEntry()
  * @method string getPageNumber()
  * @method string getRouteType()
+ * @method string getResourceGroupId()
  * @method string getPageSize()
  * @method string getNextHopId()
  * @method string getNextHopType()
@@ -2530,6 +2731,19 @@ class ListErRouteEntries extends Rpc
     {
         $this->data['RouteType'] = $value;
         $this->options['form_params']['RouteType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -2644,6 +2858,7 @@ class ListErRouteEntries extends Rpc
  * @method string getReceptionInstanceId()
  * @method string getErRouteMapNum()
  * @method string getPageNumber()
+ * @method string getResourceGroupId()
  * @method string getRouteMapAction()
  * @method string getTransmissionInstanceType()
  * @method string getPageSize()
@@ -2706,6 +2921,19 @@ class ListErRouteMaps extends Rpc
     {
         $this->data['PageNumber'] = $value;
         $this->options['form_params']['PageNumber'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -2844,6 +3072,7 @@ class ListErRouteMaps extends Rpc
 /**
  * @method string getMasterZoneId()
  * @method string getPageNumber()
+ * @method string getResourceGroupId()
  * @method string getPageSize()
  * @method string getInstanceType()
  * @method string getErId()
@@ -2876,6 +3105,19 @@ class ListErs extends Rpc
     {
         $this->data['PageNumber'] = $value;
         $this->options['form_params']['PageNumber'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -3002,6 +3244,96 @@ class ListInstancesByNcd extends Rpc
     {
         $this->data['InstanceType'] = $value;
         $this->options['form_params']['InstanceType'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getPageNumber()
+ * @method string getPageSize()
+ * @method string getPrivateIpAddress()
+ * @method string getIpName()
+ * @method string getElasticNetworkInterfaceId()
+ * @method string getStatus()
+ */
+class ListLeniPrivateIpAddresses extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPageNumber($value)
+    {
+        $this->data['PageNumber'] = $value;
+        $this->options['form_params']['PageNumber'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPageSize($value)
+    {
+        $this->data['PageSize'] = $value;
+        $this->options['form_params']['PageSize'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withPrivateIpAddress($value)
+    {
+        $this->data['PrivateIpAddress'] = $value;
+        $this->options['form_params']['PrivateIpAddress'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIpName($value)
+    {
+        $this->data['IpName'] = $value;
+        $this->options['form_params']['IpName'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withElasticNetworkInterfaceId($value)
+    {
+        $this->data['ElasticNetworkInterfaceId'] = $value;
+        $this->options['form_params']['ElasticNetworkInterfaceId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withStatus($value)
+    {
+        $this->data['Status'] = $value;
+        $this->options['form_params']['Status'] = $value;
 
         return $this;
     }
@@ -3445,8 +3777,85 @@ class ListSubnets extends Rpc
 }
 
 /**
+ * @method string getFrom()
+ * @method string getTo()
+ * @method string getVccId()
+ * @method string getMetricName()
+ * @method string getDirection()
+ */
+class ListVccFlowInfos extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withFrom($value)
+    {
+        $this->data['From'] = $value;
+        $this->options['form_params']['From'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withTo($value)
+    {
+        $this->data['To'] = $value;
+        $this->options['form_params']['To'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withVccId($value)
+    {
+        $this->data['VccId'] = $value;
+        $this->options['form_params']['VccId'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withMetricName($value)
+    {
+        $this->data['MetricName'] = $value;
+        $this->options['form_params']['MetricName'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDirection($value)
+    {
+        $this->data['Direction'] = $value;
+        $this->options['form_params']['Direction'] = $value;
+
+        return $this;
+    }
+}
+
+/**
  * @method string getGrantTenantId()
  * @method string getPageNumber()
+ * @method string getResourceGroupId()
  * @method string getGrantRuleId()
  * @method string getPageSize()
  * @method string getErId()
@@ -3480,6 +3889,19 @@ class ListVccGrantRules extends Rpc
     {
         $this->data['PageNumber'] = $value;
         $this->options['form_params']['PageNumber'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -3580,6 +4002,7 @@ class ListVccGrantRules extends Rpc
  * @method string getIgnoreDetailedRouteEntry()
  * @method string getPageNumber()
  * @method string getRouteType()
+ * @method string getResourceGroupId()
  * @method string getPageSize()
  * @method string getNextHopId()
  * @method string getVccId()
@@ -3627,6 +4050,19 @@ class ListVccRouteEntries extends Rpc
     {
         $this->data['RouteType'] = $value;
         $this->options['form_params']['RouteType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -3934,6 +4370,7 @@ class ListVccs extends Rpc
 /**
  * @method string getGrantTenantId()
  * @method string getPageNumber()
+ * @method string getResourceGroupId()
  * @method string getGrantRuleId()
  * @method string getPageSize()
  * @method string getErId()
@@ -3967,6 +4404,19 @@ class ListVpdGrantRules extends Rpc
     {
         $this->data['PageNumber'] = $value;
         $this->options['form_params']['PageNumber'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -4067,6 +4517,7 @@ class ListVpdGrantRules extends Rpc
  * @method string getIgnoreDetailedRouteEntry()
  * @method string getPageNumber()
  * @method string getRouteType()
+ * @method string getResourceGroupId()
  * @method string getPageSize()
  * @method string getNextHopId()
  * @method string getNextHopType()
@@ -4114,6 +4565,19 @@ class ListVpdRouteEntries extends Rpc
     {
         $this->data['RouteType'] = $value;
         $this->options['form_params']['RouteType'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withResourceGroupId($value)
+    {
+        $this->data['ResourceGroupId'] = $value;
+        $this->options['form_params']['ResourceGroupId'] = $value;
 
         return $this;
     }
@@ -4453,6 +4917,54 @@ class QueryInstanceNcd extends Rpc
 }
 
 /**
+ * @method string getClientToken()
+ * @method string getIpName()
+ * @method string getElasticNetworkInterfaceId()
+ */
+class UnassignLeniPrivateIpAddress extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withClientToken($value)
+    {
+        $this->data['ClientToken'] = $value;
+        $this->options['form_params']['ClientToken'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIpName($value)
+    {
+        $this->data['IpName'] = $value;
+        $this->options['form_params']['IpName'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withElasticNetworkInterfaceId($value)
+    {
+        $this->data['ElasticNetworkInterfaceId'] = $value;
+        $this->options['form_params']['ElasticNetworkInterfaceId'] = $value;
+
+        return $this;
+    }
+}
+
+/**
  * @method string getSubnetId()
  * @method string getClientToken()
  * @method string getPrivateIpAddress()
@@ -4564,6 +5076,7 @@ class UnAssociateVpdCidrBlock extends Rpc
 
 /**
  * @method string getClientToken()
+ * @method string getSecurityGroupId()
  * @method string getDescription()
  * @method string getElasticNetworkInterfaceId()
  */
@@ -4579,6 +5092,19 @@ class UpdateElasticNetworkInterface extends Rpc
     {
         $this->data['ClientToken'] = $value;
         $this->options['form_params']['ClientToken'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withSecurityGroupId($value)
+    {
+        $this->data['SecurityGroupId'] = $value;
+        $this->options['form_params']['SecurityGroupId'] = $value;
 
         return $this;
     }
@@ -4749,6 +5275,54 @@ class UpdateErRouteMap extends Rpc
     {
         $this->data['ErRouteMapId'] = $value;
         $this->options['form_params']['ErRouteMapId'] = $value;
+
+        return $this;
+    }
+}
+
+/**
+ * @method string getDescription()
+ * @method string getIpName()
+ * @method string getElasticNetworkInterfaceId()
+ */
+class UpdateLeniPrivateIpAddress extends Rpc
+{
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withDescription($value)
+    {
+        $this->data['Description'] = $value;
+        $this->options['form_params']['Description'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withIpName($value)
+    {
+        $this->data['IpName'] = $value;
+        $this->options['form_params']['IpName'] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function withElasticNetworkInterfaceId($value)
+    {
+        $this->data['ElasticNetworkInterfaceId'] = $value;
+        $this->options['form_params']['ElasticNetworkInterfaceId'] = $value;
 
         return $this;
     }
